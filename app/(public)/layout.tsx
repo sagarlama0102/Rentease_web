@@ -1,5 +1,6 @@
 import Header from "./_components/Header";
 import Footer from "./_components/Footer";
+import HeroSection from "./_components/HeroSection";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     return (
@@ -10,6 +11,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
       {/* Page content */}
       <main className="flex-1">{children}</main>
+
+      <HeroSection/>
 
       {/* Global Footer */}
       <Footer />
