@@ -1,3 +1,4 @@
+import BestDeals from "./_components/BestDeals";
 import HeroSection from "./_components/HeroSection";
 import LatestProperties from "./_components/LatestProperties";
 import PropertyByArea from "./_components/PropertiesByArea";
@@ -10,9 +11,9 @@ export default function Page() {
       
       <HeroSection />
       <SearchBar />
-      < PropertyByArea />
-      < LatestProperties />
-      
+      <PropertyByArea />
+      <LatestProperties />
+      <BestDeals/>
     </>
   );
 }
