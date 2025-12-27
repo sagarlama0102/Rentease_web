@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { loginSchema, LoginData } from "../schema";
 
-export default function useLoginForm() {
+export default function useLoginForm(onSuccess : ()=> void) {
   const [formData, setFormData] = useState<LoginData>({
     email: "",
     password: "",
@@ -42,6 +42,8 @@ export default function useLoginForm() {
     // ✅ Valid login (dummy for sprint 1)
     setErrors({});
     alert(`Logged in as: ${formData.email}`);
+
+    onSuccess();
 
     setFormData({
       email: "",

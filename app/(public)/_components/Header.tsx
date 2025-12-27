@@ -136,9 +136,19 @@
 
 import Link from "next/link";
 import { useState } from "react";
-
+import AuthModal from "@/app/(auth)/_components/authModal";
+import LoginForm from "@/app/(auth)/_components/LoginForm";
+import RegisterForm from "@/app/(auth)/_components/RegisterForm";
 export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // Modal States
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [authView, setAuthView] = useState<"login" | "register">("login");
+
+  // Handlers
+  const openLogin = () => { setAuthView("login"); setIsModalOpen(true); };
+  const openRegister = () => { setAuthView("register"); setIsModalOpen(true); };
 
   return (
     <header className="w-full bg-white shadow-sm">
@@ -148,7 +158,7 @@ export default function Header() {
           <Link href="/">RENTEASE</Link> 
         </div>
 
-        {/* Navigation Links */}
+        {/* Navigation Links - Dynamically switches based on isLoggedIn */}
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-700" aria-label="Main Navigation">
           {!isLoggedIn ? (
             <>
@@ -167,14 +177,48 @@ export default function Header() {
           )}
         </nav>
 
-        {/* Auth Buttons */}
-        {!isLoggedIn && (
-          <div className="flex items-center gap-3">
-            <Link href="/login" className="text-sm font-medium text-gray-700 hover:text-gray-900">Login</Link>
-            <Link href="/register" className="rounded-md bg-green-600 px-4 py-2 text-sm font-semibold text-white hover:bg-green-700">Sign Up</Link>
-          </div>
-        )}
+        
+        {/* Auth Buttons / Profile Action */}
+        <div className="flex items-center gap-3">
+          {!isLoggedIn ? (
+            <>
+              <button 
+                onClick={openLogin}
+                className="text-sm font-medium text-gray-700 hover:text-green-600 transition"
+              >
+                Login
+              </button>
+              <button 
+                onClick={openRegister}
+                className="rounded-md bg-green-500 px-4 py-2 text-sm font-semibold text-white hover:bg-green-600 transition"
+              >
+                Sign Up
+              </button>
+            </>
+          ) : (
+            <button 
+              onClick={() => setIsLoggedIn(false)} // Simple logout toggle for testing
+              className="text-sm font-medium text-red-500 hover:text-red-700 transition"
+            >
+              Logout
+            </button>
+          )}
+        </div>
       </div>
+
+      {/* AUTH MODAL ENGINE */}
+      <AuthModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        {authView === "login" ? (
+          <LoginForm onSwitch={() => setAuthView("register")}
+          onLoginSuccess={() =>{
+            setIsLoggedIn(true); // Change the Navbar
+            setIsModalOpen(false); // Close the Modal
+          }} />
+        ) : (
+          <RegisterForm onSwitch={() => setAuthView("login")} />
+        )}
+      </AuthModal>
     </header>
   );
 }
+

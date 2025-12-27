@@ -1,15 +1,16 @@
 "use client";
 
-import LoginForm from "../_components/LoginForm";
+import LoginForm from "../_components/LoginForm"; // adjust path if needed
 
-export default function Page() {
+export default function LoginPage() {
     return (
-        <div className="space-y-6 w-full">
-            <div className="text-center">
-                <h1 className="text-2xl font-semibold">Welcome back</h1>
-                <p className="mt-1 text-sm text-foreground/70">Log in to your account</p>
+        <div className="flex items-center justify-center min-h-screen bg-gray-50 px-4">
+            <div className="w-full max-w-md bg-white p-6 rounded-xl shadow-md">
+                <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">
+                    Login to your account
+                </h1>
+                <LoginForm />
             </div>
-            <LoginForm />
         </div>
     );
 }

@@ -1,76 +1,68 @@
 "use client";
 
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
-import { startTransition, useTransition } from "react";
-import { useRouter } from "next/navigation";
-import { LoginData, loginSchema } from "../schema";
-export default function LoginForm() {
-    const router = useRouter();
-    const {
-        register,
-        handleSubmit,
-        formState: { errors, isSubmitting },
-    } = useForm<LoginData>({
-        resolver: zodResolver(loginSchema),
-        mode: "onSubmit",
-    });
-    const [pending, setTransition] = useTransition()
+import useLoginForm from "../hooks/useLoginForm";
 
-    const submit = async (values: LoginData) => {
-        // GOTO
-        setTransition( async () => {
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-            // router.push("/");
-        })
-        console.log("login", values);
-    };
+// 1. Add the Interface for props
+interface LoginFormProps {
+  onSwitch: () => void;
+  onLoginSuccess: () => void;
+}
 
-    return (
-        <form onSubmit={handleSubmit(submit)} className="space-y-4">
-            <div className="space-y-1">
-                <label className="text-sm font-medium" htmlFor="email">Email</label>
-                <input
-                    id="email"
-                    type="email"
-                    autoComplete="email"
-                    className="h-10 w-full rounded-md border border-black/10 dark:border-white/15 bg-background px-3 text-sm outline-none focus:border-foreground/40"
-                    {...register("email")}
-                    placeholder="you@example.com"
-                />
-                {errors.email?.message && (
-                    <p className="text-xs text-red-600">{errors.email.message}</p>
-                )}
-            </div>
+export default function LoginForm({onSwitch, onLoginSuccess}: LoginFormProps) {
+  const { formData, errors, handleChange, handleSubmit } = useLoginForm(onLoginSuccess);
 
-            <div className="space-y-1">
-                <label className="text-sm font-medium" htmlFor="password">Password</label>
-                <input
-                    id="password"
-                    type="password"
-                    autoComplete="current-password"
-                    className="h-10 w-full rounded-md border border-black/10 dark:border-white/15 bg-background px-3 text-sm outline-none focus:border-foreground/40"
-                    {...register("password")}
-                    placeholder="••••••"
-                />
-                {errors.password?.message && (
-                    <p className="text-xs text-red-600">{errors.password.message}</p>
-                )}
-            </div>
+  return (
+    <form onSubmit={handleSubmit} className="max-w-md mx-auto space-y-4 p-6 border rounded-lg bg-white shadow-sm">
 
-            <button
-                type="submit"
-                disabled={isSubmitting || pending}
-                className="h-10 w-full rounded-md bg-foreground text-background text-sm font-semibold hover:opacity-90 disabled:opacity-60"
-            >
-                { isSubmitting || pending ? "Logging in..." : "Log in"}
-            </button>
+      {/* Email */}
+      <div className="space-y-1">
+        <label className="text-sm font-medium" htmlFor="email">Email</label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          value={formData.email}
+          onChange={handleChange}
+          placeholder="you@example.com"
+          className="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-green-500"
+        />
+        {errors.email && <p className="text-xs text-red-600">{errors.email}</p>}
+      </div>
 
-            <div className="mt-1 text-center text-sm">
-                Don't have an account? <Link href="/register" className="font-semibold hover:underline">Sign up</Link>
-            </div>
-        </form>
-    );
+      {/* Password */}
+      <div className="space-y-1">
+        <label className="text-sm font-medium" htmlFor="password">Password</label>
+        <input
+          id="password"
+          name="password"
+          type="password"
+          value={formData.password}
+          onChange={handleChange}
+          placeholder="••••••"
+          className="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-green-500"
+        />
+        {errors.password && <p className="text-xs text-red-600">{errors.password}</p>}
+      </div>
+
+      {/* Submit Button */}
+      <button
+        type="submit"
+        className="w-full py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
+      >
+        Login
+      </button>
+      {/* 3. The Switch Button */}
+        <p className="text-center text-sm text-gray-500 pt-2">
+          New to RentEase?{" "}
+          <button 
+            type="button" 
+            onClick={onSwitch} // This triggers the setAuthView("register") in your Header
+            className="text-green-600 font-bold hover:underline underline-offset-4"
+          >
+            Create an account
+          </button>
+        </p>
+
+    </form>
+  );
 }
