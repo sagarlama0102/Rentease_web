@@ -140,9 +140,15 @@ import AuthModal from "@/app/(auth)/_components/authModal";
 import LoginForm from "@/app/(auth)/_components/LoginForm";
 import RegisterForm from "@/app/(auth)/_components/RegisterForm";
 import { useRouter } from "next/navigation";
-export default function Header() {
+
+// 1. Define the Prop interface
+interface HeaderProps {
+  forceLoggedIn?: boolean;
+}
+export default function Header({forceLoggedIn = false}: HeaderProps) {
+  
   const router = useRouter();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(forceLoggedIn);
 
   // Modal States
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -199,7 +205,13 @@ export default function Header() {
             </>
           ) : (
             <button 
-              onClick={() => setIsLoggedIn(false)} // Simple logout toggle for testing
+              onClick={() => {
+                if(confirm("Are you sure you want to logout?")){
+                  setIsLoggedIn(false);
+                  router.push("/");
+                }
+                
+              }} // Simple logout toggle for testing
               className="text-sm font-medium text-red-500 hover:text-red-700 transition"
             >
               Logout

@@ -11,7 +11,7 @@ export default function DashboardLayout({
       {/* Note: In a real app, we would use a Global State (like Context or Redux).
          For now, since your Header handles the UI, we render it here.
       */}
-      <Header /> 
+      <Header forceLoggedIn = {true}/> 
 
       {/* This is where your Dashboard page content will appear */}
       <main className="flex-grow bg-gray-50">
