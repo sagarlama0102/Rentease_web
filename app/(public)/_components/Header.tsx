@@ -139,7 +139,9 @@ import { useState } from "react";
 import AuthModal from "@/app/(auth)/_components/authModal";
 import LoginForm from "@/app/(auth)/_components/LoginForm";
 import RegisterForm from "@/app/(auth)/_components/RegisterForm";
+import { useRouter } from "next/navigation";
 export default function Header() {
+  const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // Modal States
@@ -213,6 +215,7 @@ export default function Header() {
           onLoginSuccess={() =>{
             setIsLoggedIn(true); // Change the Navbar
             setIsModalOpen(false); // Close the Modal
+            router.push("/dashboard");
           }} />
         ) : (
           <RegisterForm onSwitch={() => setAuthView("login")} />
