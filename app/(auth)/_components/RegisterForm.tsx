@@ -1,108 +1,85 @@
 "use client";
 
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
-import { RegisterData, registerSchema } from "../schema";
-import { useTransition } from "react";
-import { useRouter } from "next/navigation";
+import useRegisterForm from "../hooks/useRegisterForm";
+// Step 1: Define the interface
+interface RegisterFormProps {
+  onSwitch: () => void;
+}
 
-export default function RegisterForm() {
-    const router = useRouter();
-    const {
-        register,
-        handleSubmit,
-        formState: { errors, isSubmitting },
-    } = useForm<RegisterData>({
-        resolver: zodResolver(registerSchema),
-        mode: "onSubmit",
-    });
+export default function RegisterForm({onSwitch}: RegisterFormProps) {
+  const { formData, errors, handleChange, handleSubmit } = useRegisterForm();
 
-    const [pending, setTransition] = useTransition()
+  return (
+    <form onSubmit={handleSubmit} className="max-w-md mx-auto space-y-4 p-6 border rounded-lg bg-white shadow-sm">
+      
+      {/* Name */}
+      <div className="space-y-1">
+        <label className="text-sm font-medium" htmlFor="name">Full Name</label>
+        <input
+          id="name"
+          name="name"
+          type="text"
+          value={formData.name}
+          onChange={handleChange}
+          placeholder="Jane Doe"
+          className="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-green-500"
+        />
+        {errors.name && <p className="text-xs text-red-600">{errors.name}</p>}
+      </div>
 
-    const submit = async (values: RegisterData) => {
-        setTransition( async () => {
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-            router.push("/login");
-        })
-        // GO TO LOGIN PAGE
-        console.log("register", values);
-    };
+      {/* Email */}
+      <div className="space-y-1">
+        <label className="text-sm font-medium" htmlFor="email">Email</label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          value={formData.email}
+          onChange={handleChange}
+          placeholder="you@example.com"
+          className="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-green-500"
+        />
+        {errors.email && <p className="text-xs text-red-600">{errors.email}</p>}
+      </div>
 
-    return (
-        <form onSubmit={handleSubmit(submit)} className="space-y-4">
-            <div className="space-y-1">
-                <label className="text-sm font-medium" htmlFor="name">Full name</label>
-                <input
-                    id="name"
-                    type="text"
-                    autoComplete="name"
-                    className="h-10 w-full rounded-md border border-black/10 dark:border-white/15 bg-background px-3 text-sm outline-none focus:border-foreground/40"
-                    {...register("name")}
-                    placeholder="Jane Doe"
-                />
-                {errors.name?.message && (
-                    <p className="text-xs text-red-600">{errors.name.message}</p>
-                )}
-            </div>
+      {/* Password */}
+      <div className="space-y-1">
+        <label className="text-sm font-medium" htmlFor="password">Password</label>
+        <input
+          id="password"
+          name="password"
+          type="password"
+          value={formData.password}
+          onChange={handleChange}
+          placeholder="••••••"
+          className="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-green-500"
+        />
+        {errors.password && <p className="text-xs text-red-600">{errors.password}</p>}
+      </div>
 
-            <div className="space-y-1">
-                <label className="text-sm font-medium" htmlFor="email">Email</label>
-                <input
-                    id="email"
-                    type="email"
-                    autoComplete="email"
-                    className="h-10 w-full rounded-md border border-black/10 dark:border-white/15 bg-background px-3 text-sm outline-none focus:border-foreground/40"
-                    {...register("email")}
-                    placeholder="you@example.com"
-                />
-                {errors.email?.message && (
-                    <p className="text-xs text-red-600">{errors.email.message}</p>
-                )}
-            </div>
+      {/* Confirm Password */}
+      <div className="space-y-1">
+        <label className="text-sm font-medium" htmlFor="confirmPassword">Confirm Password</label>
+        <input
+          id="confirmPassword"
+          name="confirmPassword"
+          type="password"
+          value={formData.confirmPassword}
+          onChange={handleChange}
+          placeholder="••••••"
+          className="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-green-500"
+        />
+        {errors.confirmPassword && <p className="text-xs text-red-600">{errors.confirmPassword}</p>}
+      </div>
 
-            <div className="space-y-1">
-                <label className="text-sm font-medium" htmlFor="password">Password</label>
-                <input
-                    id="password"
-                    type="password"
-                    autoComplete="new-password"
-                    className="h-10 w-full rounded-md border border-black/10 dark:border-white/15 bg-background px-3 text-sm outline-none focus:border-foreground/40"
-                    {...register("password")}
-                    placeholder="••••••"
-                />
-                {errors.password?.message && (
-                    <p className="text-xs text-red-600">{errors.password.message}</p>
-                )}
-            </div>
+      {/* Submit Button */}
+      <button
+        type="submit"
+        className="w-full py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
+      >
+        Create Account
+      </button>
 
-            <div className="space-y-1">
-                <label className="text-sm font-medium" htmlFor="confirmPassword">Confirm password</label>
-                <input
-                    id="confirmPassword"
-                    type="password"
-                    autoComplete="new-password"
-                    className="h-10 w-full rounded-md border border-black/10 dark:border-white/15 bg-background px-3 text-sm outline-none focus:border-foreground/40"
-                    {...register("confirmPassword")}
-                    placeholder="••••••"
-                />
-                {errors.confirmPassword?.message && (
-                    <p className="text-xs text-red-600">{errors.confirmPassword.message}</p>
-                )}
-            </div>
-
-            <button
-                type="submit"
-                disabled={isSubmitting || pending}
-                className="h-10 w-full rounded-md bg-foreground text-background text-sm font-semibold hover:opacity-90 disabled:opacity-60"
-            >
-                { isSubmitting || pending ? "Creating account..." : "Create account"}
-            </button>
-
-            <div className="mt-1 text-center text-sm">
-                Already have an account? <Link href="/login" className="font-semibold hover:underline">Log in</Link>
-            </div>
-        </form>
-    );
+    </form>
+  );
 }

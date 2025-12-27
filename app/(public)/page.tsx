@@ -1,9 +1,19 @@
-import Image from "next/image";
+import BestDeals from "./_components/BestDeals";
+import HeroSection from "./_components/HeroSection";
+import LatestProperties from "./_components/LatestProperties";
+import PropertyByArea from "./_components/PropertiesByArea";
+import SearchBar from "./_components/SearchBar";
 
-export default function Home() {
+
+export default function Page() {
   return (
-    <div className="  ">
-      Home
-    </div>
+    <>
+      
+      <HeroSection />
+      <SearchBar />
+      <PropertyByArea />
+      <LatestProperties />
+      <BestDeals/>
+    </>
   );
 }
