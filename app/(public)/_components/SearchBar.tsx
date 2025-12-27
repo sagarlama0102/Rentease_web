@@ -27,7 +27,7 @@ export default function SearchBar() {
 
           {/* Search Button */}
           <button
-            className="w-full md:w-auto rounded-md bg-green-600 px-6 py-3 text-sm font-semibold text-white hover:bg-green-700 transition"
+            className="w-full md:w-auto rounded-md bg-[#142725] px-6 py-3 text-sm font-semibold text-white hover:bg-green-700 transition"
           >
             Search
           </button>

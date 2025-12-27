@@ -70,7 +70,7 @@ export default function BestDeals() {
               
               {/* Best Offer Badge */}
               <div className="absolute top-4 left-4 z-10">
-                <span className="bg-gray-800/80 text-white text-[10px] px-3 py-1 rounded-sm backdrop-blur-sm">
+                <span className="bg-[#142725] text-white text-[10px] px-3 py-1 rounded-sm backdrop-blur-sm">
                   Best offer
                 </span>
               </div>
