@@ -12,19 +12,49 @@ export default function RegisterForm({onSwitch}: RegisterFormProps) {
   return (
     <form onSubmit={handleSubmit} className="max-w-md mx-auto space-y-4 p-6 border rounded-lg bg-white shadow-sm">
       
-      {/* Name */}
+      {/* Username Field */}
       <div className="space-y-1">
-        <label className="text-sm font-medium" htmlFor="name">Full Name</label>
+        <label className="text-sm font-medium" htmlFor="username">Username</label>
         <input
-          id="name"
-          name="name"
+          id="username"
+          name="username"
           type="text"
-          value={formData.name}
+          value={formData.username}
           onChange={handleChange}
-          placeholder="Jane Doe"
-          className="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-green-500"
+          placeholder="jdoe123"
+          className="w-full border rounded px-3 py-2 text-sm focus:ring-1 focus:ring-green-500"
         />
-        {errors.name && <p className="text-xs text-red-600">{errors.name}</p>}
+        {errors.username && <p className="text-xs text-red-600">{errors.username}</p>}
+      </div>
+
+      {/* Names Row */}
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-1">
+          <label className="text-sm font-medium" htmlFor="firstName">First Name</label>
+          <input
+            id="firstName"
+            name="firstName"
+            type="text"
+            value={formData.firstName}
+            onChange={handleChange}
+            placeholder="Jane"
+            className="w-full border rounded px-3 py-2 text-sm focus:ring-1 focus:ring-green-500"
+          />
+          {errors.firstName && <p className="text-xs text-red-600">{errors.firstName}</p>}
+        </div>
+        <div className="space-y-1">
+          <label className="text-sm font-medium" htmlFor="lastName">Last Name</label>
+          <input
+            id="lastName"
+            name="lastName"
+            type="text"
+            value={formData.lastName}
+            onChange={handleChange}
+            placeholder="Doe"
+            className="w-full border rounded px-3 py-2 text-sm focus:ring-1 focus:ring-green-500"
+          />
+          {errors.lastName && <p className="text-xs text-red-600">{errors.lastName}</p>}
+        </div>
       </div>
 
       {/* Email */}

@@ -5,7 +5,9 @@ import { registerSchema, RegisterData } from "../schema";
 
 export default function useRegisterForm() {
   const [formData, setFormData] = useState<RegisterData>({
-    name: "",
+    username: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -43,10 +45,12 @@ export default function useRegisterForm() {
 
     // ✅ Valid data
     setErrors({});
-    alert(`Registered: ${formData.name} (${formData.email})`);
+alert(`Registered: ${formData.firstName} ${formData.lastName} (${formData.email})`);
 
     setFormData({
-      name: "",
+      username: "",
+      firstName: "",
+      lastName: "",
       email: "",
       password: "",
       confirmPassword: "",
