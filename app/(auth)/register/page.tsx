@@ -9,7 +9,7 @@ export default function RegisterPage() {
                 <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">
                     Create an account
                 </h1>
-                <RegisterForm />
+                
             </div>
         </div>
     );
