@@ -54,8 +54,8 @@ export default function CreateUserForm() {
                 formData.append('password', data.password);
                 formData.append('confirmPassword', data.confirmPassword);
 
-                if (data.image) {
-                    formData.append('image', data.image);
+                if (data.profilePicture) {
+                    formData.append('image', data.profilePicture);
                 }
                 const response = await handleCreateUser(formData);
 
@@ -89,7 +89,7 @@ export default function CreateUserForm() {
             className="h-28 w-28 rounded-full object-cover ring-2 ring-border"
           />
           <Controller
-            name="image"
+            name="profilePicture"
             control={control}
             render={({ field: { onChange } }) => (
               <button
@@ -115,7 +115,7 @@ export default function CreateUserForm() {
       )}
 
       <Controller
-        name="image"
+        name="profilePicture"
         control={control}
         render={({ field: { onChange } }) => (
           <label className="cursor-pointer text-sm font-medium text-primary hover:underline">
@@ -132,8 +132,8 @@ export default function CreateUserForm() {
           </label>
         )}
       />
-      {errors.image && (
-        <p className="text-xs text-destructive">{errors.image.message}</p>
+      {errors.profilePicture && (
+        <p className="text-xs text-destructive">{errors.profilePicture.message}</p>
       )}
     </div>
 
