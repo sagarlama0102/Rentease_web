@@ -9,7 +9,7 @@ export default function LoginPage() {
                 <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">
                     Login to your account
                 </h1>
-                <LoginForm />
+                
             </div>
         </div>
     );
