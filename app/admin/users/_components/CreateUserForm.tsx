@@ -75,153 +75,207 @@ export default function CreateUserForm() {
     };
     console.log(errors);
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            {/* Profile Image Display */}
-            <div className="mb-4">
-                {previewImage ? (
-                    <div className="relative w-24 h-24">
-                        <img
-                            src={previewImage}
-                            alt="Profile Image Preview"
-                            className="w-24 h-24 rounded-full object-cover"
-                        />
-                        <Controller
-                            name="image"
-                            control={control}
-                            render={({ field: { onChange } }) => (
-                                <button
-                                    type="button"
-                                    onClick={() => handleDismissImage(onChange)}
-                                    className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm hover:bg-red-600"
-                                >
-                                    ✕
-                                </button>
-                            )}
-                        />
-                    </div>
-                ) : (
-                    <div className="w-24 h-24 bg-gray-300 rounded-full flex items-center justify-center">
-                        <span className="text-gray-600">No Image</span>
-                    </div>
-                )}
+  <form
+    onSubmit={handleSubmit(onSubmit)}
+    className="space-y-6 rounded-2xl border border-border bg-background p-6 shadow-sm"
+  >
+    {/* Profile Image */}
+    <div className="flex flex-col items-center gap-3">
+      {previewImage ? (
+        <div className="relative">
+          <img
+            src={previewImage}
+            alt="Profile Preview"
+            className="h-28 w-28 rounded-full object-cover ring-2 ring-border"
+          />
+          <Controller
+            name="image"
+            control={control}
+            render={({ field: { onChange } }) => (
+              <button
+                type="button"
+                onClick={() => handleDismissImage(onChange)}
+                className="
+                  absolute -top-2 -right-2
+                  h-7 w-7 rounded-full
+                  bg-destructive text-destructive-foreground
+                  flex items-center justify-center
+                  text-xs shadow hover:scale-105 transition
+                "
+              >
+                ✕
+              </button>
+            )}
+          />
+        </div>
+      ) : (
+        <div className="h-28 w-28 rounded-full bg-muted flex items-center justify-center text-sm text-muted-foreground">
+          No Image
+        </div>
+      )}
 
-            </div>
-            {/* Profile Image Input */}
-            <div className="mb-4">
-                <label className="block text-sm font-medium mb-1">Profile Image</label>
-                <Controller
-                    name="image"
-                    control={control}
-                    render={({ field: { onChange } }) => (
-                        <input
-                            ref={fileInputRef}
-                            type="file"
-                            onChange={(e) => handleImageChange(e.target.files?.[0], onChange)}
-                            accept=".jpg,.jpeg,.png,.webp"
-                        />
-                    )}
-                />
-                {errors.image && <p className="text-sm text-red-600">{errors.image.message}</p>}
-            </div>
+      <Controller
+        name="image"
+        control={control}
+        render={({ field: { onChange } }) => (
+          <label className="cursor-pointer text-sm font-medium text-primary hover:underline">
+            Upload profile photo
+            <input
+              ref={fileInputRef}
+              type="file"
+              className="hidden"
+              accept=".jpg,.jpeg,.png,.webp"
+              onChange={(e) =>
+                handleImageChange(e.target.files?.[0], onChange)
+              }
+            />
+          </label>
+        )}
+      />
+      {errors.image && (
+        <p className="text-xs text-destructive">{errors.image.message}</p>
+      )}
+    </div>
 
-            <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-1">
-                    <label className="text-sm font-medium" htmlFor="firstName">First name</label>
-                    <input
-                        id="firstName"
-                        type="text"
-                        autoComplete="given-name"
-                        className="h-10 w-full rounded-md border border-black/10 dark:border-white/15 bg-background px-3 text-sm outline-none focus:border-foreground/40"
-                        {...register("firstName")}
-                        placeholder="Jane"
-                    />
-                    {errors.firstName?.message && (
-                        <p className="text-xs text-red-600">{errors.firstName.message}</p>
-                    )}
-                </div>
+    {/* Names */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="space-y-1">
+        <label className="text-sm font-medium">First name</label>
+        <input
+          {...register("firstName")}
+          placeholder="Jane"
+          className="
+            h-10 w-full rounded-lg
+            border border-border
+            bg-background px-3 text-sm
+            focus:outline-none focus:ring-2 focus:ring-primary/30
+          "
+        />
+        {errors.firstName?.message && (
+          <p className="text-xs text-destructive">
+            {errors.firstName.message}
+          </p>
+        )}
+      </div>
 
-                <div className="space-y-1">
-                    <label className="text-sm font-medium" htmlFor="lastName">Last name</label>
-                    <input
-                        id="lastName"
-                        type="text"
-                        autoComplete="family-name"
-                        className="h-10 w-full rounded-md border border-black/10 dark:border-white/15 bg-background px-3 text-sm outline-none focus:border-foreground/40"
-                        {...register("lastName")}
-                        placeholder="Doe"
-                    />
-                    {errors.lastName?.message && (
-                        <p className="text-xs text-red-600">{errors.lastName.message}</p>
-                    )}
-                </div>
-            </div>
+      <div className="space-y-1">
+        <label className="text-sm font-medium">Last name</label>
+        <input
+          {...register("lastName")}
+          placeholder="Doe"
+          className="
+            h-10 w-full rounded-lg
+            border border-border
+            bg-background px-3 text-sm
+            focus:outline-none focus:ring-2 focus:ring-primary/30
+          "
+        />
+        {errors.lastName?.message && (
+          <p className="text-xs text-destructive">
+            {errors.lastName.message}
+          </p>
+        )}
+      </div>
+    </div>
 
-            <div className="space-y-1">
-                <label className="text-sm font-medium" htmlFor="email">Email</label>
-                <input
-                    id="email"
-                    type="email"
-                    autoComplete="email"
-                    className="h-10 w-full rounded-md border border-black/10 dark:border-white/15 bg-background px-3 text-sm outline-none focus:border-foreground/40"
-                    {...register("email")}
-                    placeholder="you@example.com"
-                />
-                {errors.email?.message && (
-                    <p className="text-xs text-red-600">{errors.email.message}</p>
-                )}
-            </div>
+    {/* Email */}
+    <div className="space-y-1">
+      <label className="text-sm font-medium">Email</label>
+      <input
+        {...register("email")}
+        type="email"
+        placeholder="you@example.com"
+        className="
+          h-10 w-full rounded-lg
+          border border-border
+          bg-background px-3 text-sm
+          focus:outline-none focus:ring-2 focus:ring-primary/30
+        "
+      />
+      {errors.email?.message && (
+        <p className="text-xs text-destructive">{errors.email.message}</p>
+      )}
+    </div>
 
-            <div className="space-y-1">
-                <label className="text-sm font-medium" htmlFor="username">Username</label>
-                <input
-                    id="username"
-                    type="text"
-                    autoComplete="username"
-                    className="h-10 w-full rounded-md border border-black/10 dark:border-white/15 bg-background px-3 text-sm outline-none focus:border-foreground/40"
-                    {...register("username")}
-                    placeholder="Jane Doe"
-                />
-                {errors.username?.message && (
-                    <p className="text-xs text-red-600">{errors.username.message}</p>
-                )}
-            </div>
-            <div className="space-y-1">
-                <label className="text-sm font-medium" htmlFor="password">Password</label>
-                <input
-                    id="password"
-                    type="password"
-                    autoComplete="new-password"
-                    className="h-10 w-full rounded-md border border-black/10 dark:border-white/15 bg-background px-3 text-sm outline-none focus:border-foreground/40"
-                    {...register("password")}
-                    placeholder="••••••"
-                />
-                {errors.password?.message && (
-                    <p className="text-xs text-red-600">{errors.password.message}</p>
-                )}
-            </div>
+    {/* Username */}
+    <div className="space-y-1">
+      <label className="text-sm font-medium">Username</label>
+      <input
+        {...register("username")}
+        placeholder="jane_doe"
+        className="
+          h-10 w-full rounded-lg
+          border border-border
+          bg-background px-3 text-sm
+          focus:outline-none focus:ring-2 focus:ring-primary/30
+        "
+      />
+      {errors.username?.message && (
+        <p className="text-xs text-destructive">
+          {errors.username.message}
+        </p>
+      )}
+    </div>
 
-            <div className="space-y-1">
-                <label className="text-sm font-medium" htmlFor="confirmPassword">Confirm password</label>
-                <input
-                    id="confirmPassword"
-                    type="password"
-                    autoComplete="new-password"
-                    className="h-10 w-full rounded-md border border-black/10 dark:border-white/15 bg-background px-3 text-sm outline-none focus:border-foreground/40"
-                    {...register("confirmPassword")}
-                    placeholder="••••••"
-                />
-                {errors.confirmPassword?.message && (
-                    <p className="text-xs text-red-600">{errors.confirmPassword.message}</p>
-                )}
-            </div>
+    {/* Passwords */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="space-y-1">
+        <label className="text-sm font-medium">Password</label>
+        <input
+          {...register("password")}
+          type="password"
+          placeholder="••••••••"
+          className="
+            h-10 w-full rounded-lg
+            border border-border
+            bg-background px-3 text-sm
+            focus:outline-none focus:ring-2 focus:ring-primary/30
+          "
+        />
+        {errors.password?.message && (
+          <p className="text-xs text-destructive">
+            {errors.password.message}
+          </p>
+        )}
+      </div>
 
-            <button
-                type="submit"
-                disabled={isSubmitting || pending}
-                className="h-10 w-full rounded-md bg-foreground text-background text-sm font-semibold hover:opacity-90 disabled:opacity-60"
-            >
-                {isSubmitting || pending ? "Creating account..." : "Create account"}
-            </button>
-        </form>
-    );
+      <div className="space-y-1">
+        <label className="text-sm font-medium">Confirm password</label>
+        <input
+          {...register("confirmPassword")}
+          type="password"
+          placeholder="••••••••"
+          className="
+            h-10 w-full rounded-lg
+            border border-border
+            bg-background px-3 text-sm
+            focus:outline-none focus:ring-2 focus:ring-primary/30
+          "
+        />
+        {errors.confirmPassword?.message && (
+          <p className="text-xs text-destructive">
+            {errors.confirmPassword.message}
+          </p>
+        )}
+      </div>
+    </div>
+
+    {/* Submit */}
+    <button
+      type="submit"
+      disabled={isSubmitting || pending}
+      className="
+        h-11 w-full rounded-xl
+        bg-primary text-primary-foreground
+        text-sm font-semibold
+        shadow hover:opacity-90
+        disabled:opacity-60
+        transition
+      "
+    >
+      {isSubmitting || pending ? "Creating account..." : "Create account"}
+    </button>
+  </form>
+);
+
 }
