@@ -157,6 +157,13 @@ export default function LoginForm(){
         
         {isSubmitting || pending ? "Logging in..." : "Log in"}
       </button>
+
+      <div className="mt-1 text-center text-sm">
+                Don't have an account? <Link href="/register" className="font-semibold hover:underline">Sign up</Link>
+            </div>
+            <div className="mt-1 text-center text-sm">
+                <Link href="/forget-password" className="font-semibold hover:underline">Forgot Password?</Link>
+            </div>
       
   
 
