@@ -1,6 +1,6 @@
 "use client";
 
-// import ThemeToggle from "@/app/_components/ThemeToggle";
+import ThemeToggle from "@/app/_components/ThemeToggle";
 import { handleLogout } from "@/lib/actions/auth-action";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
