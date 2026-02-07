@@ -2,7 +2,7 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from "react"
 import { clearAuthCookies, getAuthToken, getUserData } from "@/lib/cookie"
 import { useRouter } from "next/navigation";
-import { check } from "zod";
+
 
 interface AuthContextProps {
     isAuthenticated: boolean;
