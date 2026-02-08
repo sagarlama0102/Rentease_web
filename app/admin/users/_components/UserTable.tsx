@@ -157,9 +157,9 @@ const UserTable = (
                         <tr key={user._id}>
                             <td className="px-4 py-2 text-sm text-gray-700 dark:text-gray-300">{user._id}</td>
                             <td className="px-4 py-2">
-                                {user.imageUrl ? (
+                                {user.profilePicture ? (
                                     <Image
-                                        src={`${process.env.NEXT_PUBLIC_API_BASE_URL}${user.imageUrl}`}
+                                        src={`${process.env.NEXT_PUBLIC_API_BASE_URL}${user.profilePicture}`}
                                         alt="User Image"
                                         className="w-10 h-10 rounded-full object-cover"
                                         width={40}

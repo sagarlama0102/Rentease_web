@@ -10,7 +10,7 @@ import Image from "next/image";
 export default function UpdateUserForm(
     { user }: { user: any }
 ) {
-
+    console.log("Current User Data:", user);
     const [pending, startTransition] = useTransition();
     const { register, handleSubmit, control, reset, formState: { errors, isSubmitting } } = useForm<Partial<UserData>>({
         resolver: zodResolver(UserSchema.partial()),
@@ -113,10 +113,10 @@ export default function UpdateUserForm(
                 ) :
 
                     (
-                        user.imageUrl ? (
+                        user.profilePicture ? (
                             <div className="relative w-24 h-24">
                                 <Image
-                                    src={`${process.env.NEXT_PUBLIC_API_BASE_URL}${user.imageUrl}`}
+                                    src={`${process.env.NEXT_PUBLIC_API_BASE_URL}${user.profilePicture}`}
                                     alt="Profile Image"
                                     className="w-24 h-24 rounded-full object-cover"
                                     width={96}
