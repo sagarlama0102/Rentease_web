@@ -16,7 +16,7 @@ export default async function DashboardLayout({
   // 2. Security: If no token, bounce them to login
   // This prevents the "Manually writing dashboard in URL" trick
   if (!token) {
-      redirect("/login");
+      redirect('/?auth=login');
   }
   return (
     <div className="flex flex-col min-h-screen">

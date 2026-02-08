@@ -1,9 +1,19 @@
 "use client";
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
 
 export default function Header() {
   const { logout, user } = useAuth();
+  const router = useRouter();
+
+  const handleAdminLogout = async () => {
+    if (confirm("Are you sure you want to logout of the Admin Panel?")) {
+      await logout();
+      // Redirect to the home page with the login trigger
+      router.push("/?auth=login");
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full bg-transparent px-4 pt-4">
@@ -57,7 +67,7 @@ export default function Header() {
             </div>
 
             <button
-              onClick={() => logout()}
+              onClick={handleAdminLogout}
               className="rounded-lg border border-destructive/30 px-4 py-2 text-sm font-medium text-destructive hover:bg-destructive hover:text-destructive-foreground transition"
             >
               Logout

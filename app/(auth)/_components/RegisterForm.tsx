@@ -131,8 +131,10 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { handleRegister } from "@/lib/actions/auth-action";
 
-
-export default function RegisterForm(){
+interface RegisterFormProps {
+  onSwitch: () => void;
+}
+export default function RegisterForm({ onSwitch }: RegisterFormProps){
   const router = useRouter();
   const {
     register,
@@ -271,6 +273,16 @@ export default function RegisterForm(){
         {isSubmitting || pending ? "Creating account..." : "Create account"}
        
       </button>
+      <p>
+        Already have an account?{" "}
+        <button 
+          type="button" 
+          onClick={onSwitch} 
+          className="text-green-600 hover:underline"
+        >
+          Log in
+        </button>
+      </p>
       
       
 

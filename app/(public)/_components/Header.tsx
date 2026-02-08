@@ -8,20 +8,39 @@ import LoginForm from "@/app/(auth)/_components/LoginForm";
 import RegisterForm from "@/app/(auth)/_components/RegisterForm";
 import { useRouter } from "next/navigation";
 import { handleLogout } from "@/lib/actions/auth-action";
-
+import { useSearchParams } from "next/navigation";
 
 // 1. Define the Prop interface
 interface HeaderProps {
   forceLoggedIn?: boolean;
 }
 export default function Header({forceLoggedIn = false}: HeaderProps) {
-  
+  const searchParams = useSearchParams();
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(forceLoggedIn);
 
   useEffect(() => {
+    const auth = searchParams.get("auth");
+    if (auth === "login") {
+      setAuthView("login");
+      setIsModalOpen(true);
+      
+      // This removes "?auth=login" from the bar without reloading or scrolling
+      router.replace("/", { scroll: false }); 
+    }
+  }, [searchParams, router]);
+
+  useEffect(() => {
     setIsLoggedIn(forceLoggedIn);
   }, [forceLoggedIn]);
+
+  const handleClose = () => {
+    setIsModalOpen(false);
+    // If the param somehow stuck around, this clears it when clicking 'X'
+    if (searchParams.get("auth")) {
+      router.replace("/", { scroll: false });
+    }
+  };
 
   // Modal States
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -99,14 +118,16 @@ export default function Header({forceLoggedIn = false}: HeaderProps) {
       </div>
 
       {/* AUTH MODAL ENGINE */}
-      <AuthModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+      <AuthModal isOpen={isModalOpen} onClose={handleClose}>
         {authView === "login" ? (
-          <LoginForm onSwitch={() => setAuthView("register")}
-          onLoginSuccess={() =>{
-            setIsLoggedIn(true); // Change the Navbar
-            setIsModalOpen(false); // Close the Modal
-            router.push("/dashboard");
-          }} />
+          <LoginForm 
+            onSwitch={() => setAuthView("register")}
+            onLoginSuccess={() =>{
+              setIsLoggedIn(true);
+              setIsModalOpen(false);
+              router.push("/dashboard");
+            }} 
+          />
         ) : (
           <RegisterForm onSwitch={() => setAuthView("login")} />
         )}
