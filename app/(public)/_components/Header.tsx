@@ -2,11 +2,13 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect ,useState } from "react";
 import AuthModal from "@/app/(auth)/_components/authModal";
 import LoginForm from "@/app/(auth)/_components/LoginForm";
 import RegisterForm from "@/app/(auth)/_components/RegisterForm";
 import { useRouter } from "next/navigation";
+import { handleLogout } from "@/lib/actions/auth-action";
+
 
 // 1. Define the Prop interface
 interface HeaderProps {
@@ -16,6 +18,10 @@ export default function Header({forceLoggedIn = false}: HeaderProps) {
   
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(forceLoggedIn);
+
+  useEffect(() => {
+    setIsLoggedIn(forceLoggedIn);
+  }, [forceLoggedIn]);
 
   // Modal States
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -76,8 +82,9 @@ export default function Header({forceLoggedIn = false}: HeaderProps) {
             </>
           ) : (
             <button 
-              onClick={() => {
+              onClick={async () => {
                 if(confirm("Are you sure you want to logout?")){
+                  await handleLogout();
                   setIsLoggedIn(false);
                   router.push("/");
                 }
