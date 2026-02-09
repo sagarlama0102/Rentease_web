@@ -13,7 +13,8 @@ import { useRouter } from "next/navigation";
 
 interface LoginFormProps {
   onSwitch: () => void;
-  onLoginSuccess: () => void;
+  // onLoginSuccess: () => void;
+  onLoginSuccess: (role: string) => void;
 }
 
 export default function LoginForm({ onSwitch, onLoginSuccess }: LoginFormProps){
@@ -40,12 +41,17 @@ export default function LoginForm({ onSwitch, onLoginSuccess }: LoginFormProps){
         if(!response.success){
           throw new Error(response.message);
         }
-        if(response.success){
-          onLoginSuccess();
-          router.push("/dashboard");
-        }else {
-          setError('Login Failed');
-        }
+        const userRole = response.data?.role;
+        // if(response.success){
+        //   onLoginSuccess();
+        //   router.push("/dashboard");
+        // }else {
+        //   setError('Login Failed');
+        // }
+        if (response.success) {
+        // Trigger the success logic and pass the role
+        onLoginSuccess(userRole); 
+      }
         
       }catch (err: Error | any){
           setError(err.message || 'Login Failed');

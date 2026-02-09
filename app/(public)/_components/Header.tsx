@@ -9,12 +9,14 @@ import RegisterForm from "@/app/(auth)/_components/RegisterForm";
 import { useRouter } from "next/navigation";
 import { handleLogout } from "@/lib/actions/auth-action";
 import { useSearchParams } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
 // 1. Define the Prop interface
 interface HeaderProps {
   forceLoggedIn?: boolean;
 }
 export default function Header({forceLoggedIn = false}: HeaderProps) {
+  const { checkAuth } = useAuth();
   const searchParams = useSearchParams();
   const router = useRouter();
   const [isLoggedIn, setIsLoggedIn] = useState(forceLoggedIn);
@@ -122,10 +124,16 @@ export default function Header({forceLoggedIn = false}: HeaderProps) {
         {authView === "login" ? (
           <LoginForm 
             onSwitch={() => setAuthView("register")}
-            onLoginSuccess={() =>{
+            onLoginSuccess={async(role: string) =>{
+              await checkAuth();
               setIsLoggedIn(true);
               setIsModalOpen(false);
-              router.push("/dashboard");
+              // router.push("/dashboard");
+              if (role === 'admin') {
+      router.push("/admin");
+    } else {
+      router.push("/dashboard");
+    }
             }} 
           />
         ) : (
