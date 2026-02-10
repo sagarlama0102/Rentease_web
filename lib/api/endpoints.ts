@@ -15,6 +15,19 @@ export const API = {
             GET_ONE: (userId: string) => `/api/admin/users/${userId}`,
             UPDATE: (userId: string) => `/api/admin/users/${userId}`,
             DELETE: (userId: string) => `/api/admin/users/${userId}`,
+        },
+        PROPERTY: {
+            CREATE: '/api/admin/properties/',
+            GET_ALL: '/api/admin/properties/',
+            GET_ONE: (propertyId: string) => `/api/admin/properties/${propertyId}`,
+            UPDATE: (propertyId: string) => `/api/admin/properties/${propertyId}`,
+            DELETE: (propertyId: string) => `/api/admin/properties/${propertyId}`,
+        }
+    },
+    PUBLIC: {
+        PROPERTY:{
+            GET_ALL: '/api/properties/',
+            GET_ONE: (id: string) => `/api/properties/${id}`,
         }
     }
 }
