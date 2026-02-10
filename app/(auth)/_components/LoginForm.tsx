@@ -100,19 +100,32 @@ export default function LoginForm({ onSwitch, onLoginSuccess }: LoginFormProps){
         {isSubmitting || pending ? "Logging in..." : "Log in"}
       </button>
 
-      <div className="mt-1 text-center text-sm">
-  Don't have an account?{" "}
-  <button 
-    type="button" // Important: prevents form submission
-    onClick={onSwitch} 
-    className="font-semibold text-green-600 hover:underline"
-  >
-    Sign up
-  </button>
-</div>
-      
-  
+      <div className="pt-2 space-y-3 text-center text-sm text-gray-600">
+        <Link
+          href="/forget-password"
+          className="text-green-600 font-medium hover:text-green-700 transition-colors hover:underline inline-block"
+        >
+          Forgot your password?
+        </Link>
 
+        <div className="text-gray-500">
+          Don't have an account?{" "}
+          <button
+            type="button"
+            onClick={onSwitch}
+            className="text-green-600 font-semibold hover:text-green-700 transition-colors hover:underline"
+          >
+            Sign up
+          </button>
+        </div>
+      </div>
+
+      {error && (
+        <p className="text-center text-sm text-red-600 bg-red-50 py-2 px-4 rounded-lg">
+          {error}
+        </p>
+      )}
+ 
     </form>
   );
 }

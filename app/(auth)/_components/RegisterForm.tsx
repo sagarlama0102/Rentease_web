@@ -158,7 +158,7 @@ export default function RegisterForm({ onSwitch }: RegisterFormProps){
           throw new Error (response.message);
         }
         if(response.success){
-          router.push("/login");
+          router.push("/?auth=login");
         }else {
             setError('Registration failed');
         }

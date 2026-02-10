@@ -24,7 +24,7 @@ const ResetPasswordForm = (
                 const result = await handleResetPassword(token, values.newPassword);
                 if (result.success) {
                     toast.success("Password has been reset successfully.");
-                    return router.push('/login');
+                    return router.push('/?auth=login');
                 }
                 else {
                     throw new Error(result.message || 'Failed to reset password');
