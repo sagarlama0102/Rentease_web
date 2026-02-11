@@ -25,20 +25,23 @@ export const PropertySchema = z.object({
   bhk: z.enum([BHKEnum.TWO, BHKEnum.THREE, BHKEnum.FOUR_PLUS], {
     message: "Please select a BHK option",
   }),
-    price: z.coerce
+    price: z
     .number()
     .positive("Price must be a positive number"),
     address: z.string().min(1, "Address is required"),
     city: z.string().min(1, "City is required"),
-    propertyImages:z
-            .instanceof(File)
-            .optional()
-            .refine((file) => !file || file.size <= MAX_FILE_SIZE, {
-                message: "Max file size is 5MB",
-            })
-            .refine((file) => !file || ACCEPTED_IMAGE_TYPES.includes(file.type), {
-                message: "Only .jpg, .jpeg, .png and .webp formats are supported",
-            }),
+    propertyImages: z
+  .array(
+    z
+      .instanceof(File)
+      .refine((file) => file.size <= MAX_FILE_SIZE, {
+        message: "Max file size is 5MB",
+      })
+      .refine((file) => ACCEPTED_IMAGE_TYPES.includes(file.type), {
+        message: "Only .jpg, .jpeg, .png formats are supported",
+      })
+  )
+  .optional(),
 });
 export type PropertyData = z.infer<typeof PropertySchema>;
 

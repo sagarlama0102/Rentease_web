@@ -6,7 +6,7 @@ import { useRef, useState, useTransition } from "react";
 import { toast } from "react-toastify";
 import { handleCreateProperty } from "@/lib/actions/admin/property-action";
 import { PropertyData, PropertySchema, PropertyTypeEnum, BHKEnum } from "../schema";
-
+import { SubmitHandler } from "react-hook-form";
 export default function CreatePropertyForm() {
   const [pending, startTransition] = useTransition();
   const {
@@ -15,10 +15,9 @@ export default function CreatePropertyForm() {
     control,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm({
-    resolver: zodResolver(PropertySchema),
-    
-  });
+  } = useForm<PropertyData>({
+  resolver: zodResolver(PropertySchema),
+});
 
   const [error, setError] = useState<string | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
@@ -45,7 +44,7 @@ export default function CreatePropertyForm() {
     }
   };
 
-  const onSubmit = async (data: z.infer<typeof PropertySchema>) => {
+  const onSubmit : SubmitHandler<z.input<typeof PropertySchema>> = async (data) => {
     setError(null);
     startTransition(async () => {
       try {
@@ -58,10 +57,11 @@ export default function CreatePropertyForm() {
         formData.append("city", data.city);
         formData.append("price", data.price.toString());
 
-        if (data.propertyImages) {
-          // Important: Match the key 'propertyImage' from your Multer backend
-          formData.append("propertyImage", data.propertyImages);
-        }
+       if (data.propertyImages) {
+  data.propertyImages.forEach((file) => {
+    formData.append("propertyImages", file);
+  });
+}
 
         const response = await handleCreateProperty(formData);
 
@@ -122,6 +122,7 @@ export default function CreatePropertyForm() {
               <input
                 ref={fileInputRef}
                 type="file"
+                multiple
                 className="hidden"
                 accept=".jpg,.jpeg,.png,.webp"
                 onChange={(e) => handleImageChange(e.target.files?.[0], onChange)}
@@ -192,7 +193,7 @@ export default function CreatePropertyForm() {
           <label className="text-sm font-medium">Price ($)</label>
           <input
             type="number"
-            {...register("price")}
+            {...register("price", {valueAsNumber: true})}
             placeholder="500000"
             className="h-10 w-full rounded-lg border border-border bg-background px-3 text-sm"
           />
