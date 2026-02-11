@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { handleGetAllProperty } from "@/lib/actions/property-action";
-
+import PropertyTable from "./_components/PropertyTable";
 export default async function Page({
     searchParams
 }: {
@@ -22,8 +22,8 @@ export default async function Page({
     return (
         <div>
             <Link className="text-blue-500 border border-blue-500 p-2 rounded inline-block"
-                href="/admin/users/create">Create User</Link>
-            {/* <UserTable users={response.data} pagination={response.pagination} search={search} /> */}
+                href="/admin/property/create">Create Property</Link>
+            <PropertyTable property={response.data} pagination={response.pagination} search={search}/>
         </div>
     );
 }
