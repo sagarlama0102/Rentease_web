@@ -58,10 +58,9 @@ export default function CreatePropertyForm() {
         formData.append("price", data.price.toString());
 
        if (data.propertyImages) {
-  data.propertyImages.forEach((file) => {
-    formData.append("propertyImages", file);
-  });
-}
+          formData.append("propertyImages", data.propertyImages);
+       }
+
 
         const response = await handleCreateProperty(formData);
 
