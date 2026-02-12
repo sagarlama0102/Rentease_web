@@ -16,24 +16,19 @@ export default function Sidebar() {
     href === "/admin" ? pathname === href : pathname?.startsWith(href);
 
   return (
-    <aside
-      className="
-        fixed md:static top-0 left-0 z-40
-        h-screen w-64
-        bg-background/80 backdrop-blur-xl
-        border-r border-border
-        shadow-lg
-      "
-    >
+    <aside className="fixed md:static top-0 left-0 h-screen w-64 bg-white border-r border-gray-200">
+      
       {/* Brand */}
-      <div className="px-5 py-4 border-b border-border">
-        <Link href="/admin" className="flex items-center gap-3 group">
-          <div className="h-10 w-10 rounded-xl bg-primary text-primary-foreground flex items-center justify-center font-bold shadow-md group-hover:scale-105 transition">
+      <div className="px-6 py-6 border-b border-gray-100">
+        <Link href="/admin" className="flex items-center gap-3">
+          <div className="h-9 w-9 rounded-lg bg-[#99DAB3] text-white flex items-center justify-center font-semibold">
             A
           </div>
-          <div className="leading-tight">
-            <p className="text-sm font-bold">Admin Panel</p>
-            <p className="text-[11px] text-muted-foreground">
+          <div>
+            <p className="text-sm font-semibold text-gray-900">
+              Admin Panel
+            </p>
+            <p className="text-xs text-gray-400">
               RentEase Control
             </p>
           </div>
@@ -41,31 +36,21 @@ export default function Sidebar() {
       </div>
 
       {/* Navigation */}
-      <nav className="px-3 py-4 space-y-1">
+      <nav className="px-4 py-6 space-y-2">
         {ADMIN_LINKS.map((link) => (
           <Link
             key={link.href}
             href={link.href}
             className={`
-              group flex items-center gap-3
-              px-4 py-2.5 rounded-xl text-sm font-medium
-              transition-all
+              flex items-center px-4 py-2.5 rounded-lg text-sm font-medium transition
               ${
                 isActive(link.href)
-                  ? "bg-primary text-primary-foreground shadow"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                  ? "bg-[#99DAB3] text-white"
+                  : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
               }
             `}
           >
-            {/* Active Indicator */}
-            <span
-              className={`h-2 w-2 rounded-full transition ${
-                isActive(link.href)
-                  ? "bg-primary-foreground"
-                  : "bg-transparent group-hover:bg-muted-foreground/40"
-              }`}
-            />
-            <span>{link.label}</span>
+            {link.label}
           </Link>
         ))}
       </nav>
