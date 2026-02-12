@@ -74,19 +74,29 @@ export default function CreateUserForm() {
 
     };
     console.log(errors);
-    return (
+  return (
   <form
     onSubmit={handleSubmit(onSubmit)}
-    className="space-y-6 rounded-2xl border border-border bg-background p-6 shadow-sm"
+    className="max-w-2xl mx-auto bg-white border border-gray-200 rounded-2xl p-8 space-y-8"
   >
+    {/* Title */}
+    <div>
+      <h2 className="text-xl font-semibold text-gray-900">
+        Create New User
+      </h2>
+      <p className="text-sm text-gray-500 mt-1">
+        Fill in the details below to create a new account.
+      </p>
+    </div>
+
     {/* Profile Image */}
-    <div className="flex flex-col items-center gap-3">
+    <div className="flex flex-col items-center gap-4">
       {previewImage ? (
         <div className="relative">
           <img
             src={previewImage}
             alt="Profile Preview"
-            className="h-28 w-28 rounded-full object-cover ring-2 ring-border"
+            className="h-28 w-28 rounded-full object-cover border border-gray-200"
           />
           <Controller
             name="profilePicture"
@@ -95,13 +105,7 @@ export default function CreateUserForm() {
               <button
                 type="button"
                 onClick={() => handleDismissImage(onChange)}
-                className="
-                  absolute -top-2 -right-2
-                  h-7 w-7 rounded-full
-                  bg-destructive text-destructive-foreground
-                  flex items-center justify-center
-                  text-xs shadow hover:scale-105 transition
-                "
+                className="absolute -top-2 -right-2 h-7 w-7 rounded-full bg-red-500 text-white text-xs flex items-center justify-center hover:scale-105 transition"
               >
                 ✕
               </button>
@@ -109,7 +113,7 @@ export default function CreateUserForm() {
           />
         </div>
       ) : (
-        <div className="h-28 w-28 rounded-full bg-muted flex items-center justify-center text-sm text-muted-foreground">
+        <div className="h-28 w-28 rounded-full bg-gray-100 flex items-center justify-center text-sm text-gray-400">
           No Image
         </div>
       )}
@@ -118,7 +122,7 @@ export default function CreateUserForm() {
         name="profilePicture"
         control={control}
         render={({ field: { onChange } }) => (
-          <label className="cursor-pointer text-sm font-medium text-primary hover:underline">
+          <label className="cursor-pointer text-sm font-medium text-[#99DAB3] hover:underline">
             Upload profile photo
             <input
               ref={fileInputRef}
@@ -133,45 +137,41 @@ export default function CreateUserForm() {
         )}
       />
       {errors.profilePicture && (
-        <p className="text-xs text-destructive">{errors.profilePicture.message}</p>
+        <p className="text-xs text-red-500">
+          {errors.profilePicture.message}
+        </p>
       )}
     </div>
 
     {/* Names */}
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      <div className="space-y-1">
-        <label className="text-sm font-medium">First name</label>
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <div className="space-y-2">
+        <label className="text-sm font-medium text-gray-900">
+          First name
+        </label>
         <input
           {...register("firstName")}
           placeholder="Jane"
-          className="
-            h-10 w-full rounded-lg
-            border border-border
-            bg-background px-3 text-sm
-            focus:outline-none focus:ring-2 focus:ring-primary/30
-          "
+          className="h-11 w-full rounded-lg border border-gray-300 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-[#99DAB3]"
         />
         {errors.firstName?.message && (
-          <p className="text-xs text-destructive">
+          <p className="text-xs text-red-500">
             {errors.firstName.message}
           </p>
         )}
       </div>
 
-      <div className="space-y-1">
-        <label className="text-sm font-medium">Last name</label>
+      <div className="space-y-2">
+        <label className="text-sm font-medium text-gray-900">
+          Last name
+        </label>
         <input
           {...register("lastName")}
           placeholder="Doe"
-          className="
-            h-10 w-full rounded-lg
-            border border-border
-            bg-background px-3 text-sm
-            focus:outline-none focus:ring-2 focus:ring-primary/30
-          "
+          className="h-11 w-full rounded-lg border border-gray-300 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-[#99DAB3]"
         />
         {errors.lastName?.message && (
-          <p className="text-xs text-destructive">
+          <p className="text-xs text-red-500">
             {errors.lastName.message}
           </p>
         )}
@@ -179,81 +179,71 @@ export default function CreateUserForm() {
     </div>
 
     {/* Email */}
-    <div className="space-y-1">
-      <label className="text-sm font-medium">Email</label>
+    <div className="space-y-2">
+      <label className="text-sm font-medium text-gray-900">
+        Email
+      </label>
       <input
         {...register("email")}
         type="email"
         placeholder="you@example.com"
-        className="
-          h-10 w-full rounded-lg
-          border border-border
-          bg-background px-3 text-sm
-          focus:outline-none focus:ring-2 focus:ring-primary/30
-        "
+        className="h-11 w-full rounded-lg border border-gray-300 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-[#99DAB3]"
       />
       {errors.email?.message && (
-        <p className="text-xs text-destructive">{errors.email.message}</p>
+        <p className="text-xs text-red-500">
+          {errors.email.message}
+        </p>
       )}
     </div>
 
     {/* Username */}
-    <div className="space-y-1">
-      <label className="text-sm font-medium">Username</label>
+    <div className="space-y-2">
+      <label className="text-sm font-medium text-gray-900">
+        Username
+      </label>
       <input
         {...register("username")}
         placeholder="jane_doe"
-        className="
-          h-10 w-full rounded-lg
-          border border-border
-          bg-background px-3 text-sm
-          focus:outline-none focus:ring-2 focus:ring-primary/30
-        "
+        className="h-11 w-full rounded-lg border border-gray-300 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-[#99DAB3]"
       />
       {errors.username?.message && (
-        <p className="text-xs text-destructive">
+        <p className="text-xs text-red-500">
           {errors.username.message}
         </p>
       )}
     </div>
 
     {/* Passwords */}
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      <div className="space-y-1">
-        <label className="text-sm font-medium">Password</label>
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <div className="space-y-2">
+        <label className="text-sm font-medium text-gray-900">
+          Password
+        </label>
         <input
           {...register("password")}
           type="password"
           placeholder="••••••••"
-          className="
-            h-10 w-full rounded-lg
-            border border-border
-            bg-background px-3 text-sm
-            focus:outline-none focus:ring-2 focus:ring-primary/30
-          "
+          className="h-11 w-full rounded-lg border border-gray-300 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-[#99DAB3]"
         />
         {errors.password?.message && (
-          <p className="text-xs text-destructive">
+          <p className="text-xs text-red-500">
             {errors.password.message}
           </p>
         )}
       </div>
 
-      <div className="space-y-1">
-        <label className="text-sm font-medium">Confirm password</label>
+      <div className="space-y-2">
+        <label className="text-sm font-medium text-gray-900">
+          Confirm password
+        </label>
         <input
           {...register("confirmPassword")}
           type="password"
           placeholder="••••••••"
-          className="
-            h-10 w-full rounded-lg
-            border border-border
-            bg-background px-3 text-sm
-            focus:outline-none focus:ring-2 focus:ring-primary/30
-          "
+          className="h-11 w-full rounded-lg border border-gray-300 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-[#99DAB3]"
         />
         {errors.confirmPassword?.message && (
-          <p className="text-xs text-destructive">
+          <p className="text-xs text-red-500">
             {errors.confirmPassword.message}
           </p>
         )}
@@ -264,18 +254,12 @@ export default function CreateUserForm() {
     <button
       type="submit"
       disabled={isSubmitting || pending}
-      className="
-        h-11 w-full rounded-xl
-        bg-primary text-primary-foreground
-        text-sm font-semibold
-        shadow hover:opacity-90
-        disabled:opacity-60
-        transition
-      "
+      className="h-12 w-full rounded-xl bg-[#99DAB3] text-white font-semibold text-sm hover:opacity-90 disabled:opacity-60 transition"
     >
-      {isSubmitting || pending ? "Creating account..." : "Create account"}
+      {isSubmitting || pending
+        ? "Creating account..."
+        : "Create account"}
     </button>
   </form>
 );
-
 }

@@ -21,7 +21,13 @@ export default async function Page({
     }
     return (
         <div>
-            <Link className="text-blue-500 border border-blue-500 p-2 rounded inline-block"
+            <Link className="inline-flex items-center justify-center
+        px-5 h-11
+        rounded-xl
+        bg-[#99DAB3]
+        text-white text-sm font-semibold
+        transition hover:opacity-90
+        "
                 href="/admin/property/create">Create Property</Link>
             <PropertyTable property={response.data} pagination={response.pagination} search={search}/>
         </div>

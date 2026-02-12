@@ -73,10 +73,8 @@ export default function UpdatePropertyForm(
                     formData.append('city', data.city);
                 }
                 if (data.propertyImages) {
-  data.propertyImages.forEach((file) => {
-    formData.append("propertyImages", file);
-  });
-}
+          formData.append("propertyImages", data.propertyImages);
+       }
                 const response = await handleUpdateProperty(property._id, formData);
 
                 if(!response.success){
@@ -94,129 +92,169 @@ export default function UpdatePropertyForm(
         
     };
     console.log(errors);
-    return(
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                    
-                    <div className="mb-4">
-                        {previewImage ? (
-                            <div className="relative w-24 h-24">
-                                <img
-                                    src={previewImage}
-                                    alt="Property Image Preview"
-                                    className="w-24 h-24 rounded-full object-cover"
-                                />
-                                <Controller
-                                    name="propertyImages"
-                                    control={control}
-                                    render={({ field: { onChange } }) => (
-                                        <button
-                                            type="button"
-                                            onClick={() => handleDismissImage(onChange)}
-                                            className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm hover:bg-red-600"
-                                        >
-                                            ✕
-                                        </button>
-                                    )}
-                                />
-                            </div>
-                        ) :
-        
-                            (
-                                property.propertyImages ? (
-                                    <div className="relative w-24 h-24">
-                                        <Image
-                                            src={`${process.env.NEXT_PUBLIC_API_BASE_URL}${property.propertyImages}`}
-                                            alt="Property Image"
-                                            className="w-24 h-24 rounded-full object-cover"
-                                            width={96}
-                                            height={96}
-                                        />
-                                       
-                                    </div>
-                                ) : (
-                                    <div className="w-24 h-24 bg-gray-300 rounded-full flex items-center justify-center">
-                                        <span className="text-gray-600">No Image</span>
-                                    </div>
-                                )
-                            )}
-        
-                    </div>
-                   
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium mb-1">Property Image</label>
-                        <Controller
-                            name="propertyImages"
-                            control={control}
-                            render={({ field: { onChange } }) => (
-                                <input
-                                    ref={fileInputRef}
-                                    type="file"
-                                    onChange={(e) => handleImageChange(e.target.files?.[0], onChange)}
-                                    accept=".jpg,.jpeg,.png,.webp"
-                                />
-                            )}
-                        />
-                        {errors.propertyImages && <p className="text-sm text-red-600">{errors.propertyImages.message}</p>}
-                    </div>
-                    {/* Text Fields */}
-      <div className="space-y-4">
-        <div>
-          <label className="text-sm font-medium">Title</label>
-          <input {...register("title")} className="h-10 w-full rounded-lg border border-input bg-background px-3 text-sm focus:ring-2 focus:ring-primary/20 outline-none" />
-          {errors.title && <p className="text-xs text-red-500">{errors.title.message}</p>}
+    return (
+  <form
+    onSubmit={handleSubmit(onSubmit)}
+    className="space-y-8 bg-white text-gray-900 p-8 rounded-2xl border border-gray-200"
+  >
+    {/* Image Preview */}
+    <div className="flex flex-col items-center gap-4">
+      {previewImage ? (
+        <div className="relative">
+          <img
+            src={previewImage}
+            alt="Property Preview"
+            className="h-40 w-64 rounded-xl object-cover border border-gray-200"
+          />
+          <Controller
+            name="propertyImages"
+            control={control}
+            render={({ field: { onChange } }) => (
+              <button
+                type="button"
+                onClick={() => handleDismissImage(onChange)}
+                className="absolute -top-2 -right-2 h-7 w-7 rounded-full bg-gray-900 text-white text-xs flex items-center justify-center hover:opacity-80 transition"
+              >
+                ✕
+              </button>
+            )}
+          />
         </div>
-
-        <div>
-          <label className="text-sm font-medium">Description</label>
-          <textarea {...register("description")} className="min-h-[100px] w-full rounded-lg border border-input bg-background p-3 text-sm focus:ring-2 focus:ring-primary/20 outline-none" />
+      ) : property.propertyImages ? (
+        <div className="relative">
+          <Image
+            src={`${process.env.NEXT_PUBLIC_API_BASE_URL}${property.propertyImages}`}
+            alt="Property Image"
+            width={256}
+            height={160}
+            className="h-40 w-64 rounded-xl object-cover border border-gray-200"
+          />
         </div>
-
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          <div>
-            <label className="text-sm font-medium">Type</label>
-            <select {...register("propertyType")} className="h-10 w-full rounded-lg border border-input bg-background px-3 text-sm">
-              <option value={PropertyTypeEnum.HOUSE}>House</option>
-              <option value={PropertyTypeEnum.APARTMENT}>Apartment</option>
-            </select>
-          </div>
-
-          <div>
-            <label className="text-sm font-medium">BHK</label>
-            <select {...register("bhk")} className="h-10 w-full rounded-lg border border-input bg-background px-3 text-sm">
-              <option value={BHKEnum.TWO}>2 BHK</option>
-              <option value={BHKEnum.THREE}>3 BHK</option>
-              <option value={BHKEnum.FOUR_PLUS}>4+ BHK</option>
-            </select>
-          </div>
-
-          <div>
-            <label className="text-sm font-medium">Price</label>
-            <input type="number" {...register("price")} className="h-10 w-full rounded-lg border border-input bg-background px-3 text-sm" />
-          </div>
+      ) : (
+        <div className="h-40 w-64 rounded-xl border border-gray-200 bg-gray-100 flex items-center justify-center text-sm text-gray-400">
+          No Image
         </div>
+      )}
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <div>
-            <label className="text-sm font-medium">City</label>
-            <input {...register("city")} className="h-10 w-full rounded-lg border border-input bg-background px-3 text-sm" />
-          </div>
-          <div>
-            <label className="text-sm font-medium">Address</label>
-            <input {...register("address")} className="h-10 w-full rounded-lg border border-input bg-background px-3 text-sm" />
-          </div>
-        </div>
+      <Controller
+        name="propertyImages"
+        control={control}
+        render={({ field: { onChange } }) => (
+          <label className="cursor-pointer text-sm font-medium text-[#99DAB3] hover:underline">
+            Change property image
+            <input
+              ref={fileInputRef}
+              type="file"
+              className="hidden"
+              accept=".jpg,.jpeg,.png,.webp"
+              onChange={(e) =>
+                handleImageChange(e.target.files?.[0], onChange)
+              }
+            />
+          </label>
+        )}
+      />
+
+      {errors.propertyImages && (
+        <p className="text-xs text-red-500">
+          {errors.propertyImages.message}
+        </p>
+      )}
+    </div>
+
+    {/* Title */}
+    <div className="space-y-2">
+      <label className="text-sm font-medium">Title</label>
+      <input
+        {...register("title")}
+        className="w-full h-11 rounded-lg border border-gray-300 px-3 text-sm focus:outline-none focus:border-[#99DAB3] transition"
+      />
+      {errors.title && (
+        <p className="text-xs text-red-500">{errors.title.message}</p>
+      )}
+    </div>
+
+    {/* Description */}
+    <div className="space-y-2">
+      <label className="text-sm font-medium">Description</label>
+      <textarea
+        {...register("description")}
+        className="w-full min-h-[120px] rounded-lg border border-gray-300 p-3 text-sm focus:outline-none focus:border-[#99DAB3] transition"
+      />
+      {errors.description && (
+        <p className="text-xs text-red-500">
+          {errors.description.message}
+        </p>
+      )}
+    </div>
+
+    {/* Property Details */}
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+      <div className="space-y-2">
+        <label className="text-sm font-medium">Type</label>
+        <select
+          {...register("propertyType")}
+          className="w-full h-11 rounded-lg border border-gray-300 px-3 text-sm focus:outline-none focus:border-[#99DAB3] transition"
+        >
+          <option value={PropertyTypeEnum.HOUSE}>House</option>
+          <option value={PropertyTypeEnum.APARTMENT}>Apartment</option>
+        </select>
       </div>
-        
-                    
-                    <button
-                        type="submit"
-                        disabled={isSubmitting || pending}
-                        className="h-10 w-full rounded-md bg-foreground text-background text-sm font-semibold hover:opacity-90 disabled:opacity-60"
-                    >
-                        {isSubmitting || pending ? "Updating account..." : "Update account"}
-                    </button>
-                    {error && <p className="text-center text-sm text-red-500">{error}</p>}
-                </form>
-    );
+
+      <div className="space-y-2">
+        <label className="text-sm font-medium">BHK</label>
+        <select
+          {...register("bhk")}
+          className="w-full h-11 rounded-lg border border-gray-300 px-3 text-sm focus:outline-none focus:border-[#99DAB3] transition"
+        >
+          <option value={BHKEnum.TWO}>2 BHK</option>
+          <option value={BHKEnum.THREE}>3 BHK</option>
+          <option value={BHKEnum.FOUR_PLUS}>4+ BHK</option>
+        </select>
+      </div>
+
+      <div className="space-y-2">
+        <label className="text-sm font-medium">Price</label>
+        <input
+          type="number"
+          {...register("price")}
+          className="w-full h-11 rounded-lg border border-gray-300 px-3 text-sm focus:outline-none focus:border-[#99DAB3] transition"
+        />
+      </div>
+    </div>
+
+    {/* Location */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <div className="space-y-2">
+        <label className="text-sm font-medium">City</label>
+        <input
+          {...register("city")}
+          className="w-full h-11 rounded-lg border border-gray-300 px-3 text-sm focus:outline-none focus:border-[#99DAB3] transition"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <label className="text-sm font-medium">Address</label>
+        <input
+          {...register("address")}
+          className="w-full h-11 rounded-lg border border-gray-300 px-3 text-sm focus:outline-none focus:border-[#99DAB3] transition"
+        />
+      </div>
+    </div>
+
+    {/* Submit */}
+    <button
+      type="submit"
+      disabled={isSubmitting || pending}
+      className="w-full h-12 rounded-xl bg-[#99DAB3] text-gray-900 font-semibold text-sm hover:opacity-90 transition disabled:opacity-60"
+    >
+      {isSubmitting || pending ? "Updating property..." : "Update property"}
+    </button>
+
+    {error && (
+      <p className="text-center text-sm text-red-500">{error}</p>
+    )}
+  </form>
+);
   
 }
