@@ -1,74 +1,4 @@
-// "use client";
 
-// import useLoginForm from "../hooks/useLoginForm";
-
-// // 1. Add the Interface for props
-// interface LoginFormProps {
-//   onSwitch: () => void;
-//   onLoginSuccess: () => void;
-// }
-
-// export default function LoginForm({onSwitch, onLoginSuccess}: LoginFormProps) {
-//   const { formData, errors, handleChange, handleSubmit } = useLoginForm(onLoginSuccess);
-
-//   return (
-//     <form onSubmit={handleSubmit} className="max-w-md mx-auto space-y-4 p-6 border rounded-lg bg-white shadow-sm">
-
-//       {/* Email */}
-//       <div className="space-y-1">
-//         <label className="text-sm font-medium" htmlFor="email">Email</label>
-//         <input
-//           id="email"
-//           name="email"
-//           type="email"
-//           value={formData.email}
-//           onChange={handleChange}
-//           placeholder="you@example.com"
-//           className="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-green-500"
-//         />
-//         {errors.email && <p className="text-xs text-red-600">{errors.email}</p>}
-//       </div>
-
-//       {/* Password */}
-//       <div className="space-y-1">
-//         <label className="text-sm font-medium" htmlFor="password">Password</label>
-//         <input
-//           id="password"
-//           name="password"
-//           type="password"
-//           value={formData.password}
-//           onChange={handleChange}
-//           placeholder="••••••"
-//           className="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-green-500"
-//         />
-//         {errors.password && <p className="text-xs text-red-600">{errors.password}</p>}
-//         {errors.general && (
-//   <p className="text-sm text-red-600 text-center">{errors.general}</p>
-// )}
-//       </div>
-
-//       {/* Submit Button */}
-//       <button
-//         type="submit"
-//         className="w-full py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
-//       >
-//         Login
-//       </button>
-//       {/* 3. The Switch Button */}
-//         <p className="text-center text-sm text-gray-500 pt-2">
-//           New to RentEase?{" "}
-//           <button 
-//             type="button" 
-//             onClick={onSwitch} // This triggers the setAuthView("register") in your Header
-//             className="text-green-600 font-bold hover:underline underline-offset-4"
-//           >
-//             Create an account
-//           </button>
-//         </p>
-
-//     </form>
-//   );
-// }
 
 
 "use client";
@@ -81,7 +11,13 @@ import { LoginData, loginSchema } from "../schema";
 import { handleLogin } from "@/lib/actions/auth-action";
 import { useRouter } from "next/navigation";
 
-export default function LoginForm(){
+interface LoginFormProps {
+  onSwitch: () => void;
+  // onLoginSuccess: () => void;
+  onLoginSuccess: (role: string) => void;
+}
+
+export default function LoginForm({ onSwitch, onLoginSuccess }: LoginFormProps){
   const router = useRouter();
   const {
     register,
@@ -105,11 +41,17 @@ export default function LoginForm(){
         if(!response.success){
           throw new Error(response.message);
         }
-        if(response.success){
-          router.push("/dashboard");
-        }else {
-          setError('Login Failed');
-        }
+        const userRole = response.data?.role;
+        // if(response.success){
+        //   onLoginSuccess();
+        //   router.push("/dashboard");
+        // }else {
+        //   setError('Login Failed');
+        // }
+        if (response.success) {
+        // Trigger the success logic and pass the role
+        onLoginSuccess(userRole); 
+      }
         
       }catch (err: Error | any){
           setError(err.message || 'Login Failed');
@@ -157,9 +99,33 @@ export default function LoginForm(){
         
         {isSubmitting || pending ? "Logging in..." : "Log in"}
       </button>
-      
-  
 
+      <div className="pt-2 space-y-3 text-center text-sm text-gray-600">
+        <Link
+          href="/forget-password"
+          className="text-green-600 font-medium hover:text-green-700 transition-colors hover:underline inline-block"
+        >
+          Forgot your password?
+        </Link>
+
+        <div className="text-gray-500">
+          Don't have an account?{" "}
+          <button
+            type="button"
+            onClick={onSwitch}
+            className="text-green-600 font-semibold hover:text-green-700 transition-colors hover:underline"
+          >
+            Sign up
+          </button>
+        </div>
+      </div>
+
+      {error && (
+        <p className="text-center text-sm text-red-600 bg-red-50 py-2 px-4 rounded-lg">
+          {error}
+        </p>
+      )}
+ 
     </form>
   );
 }

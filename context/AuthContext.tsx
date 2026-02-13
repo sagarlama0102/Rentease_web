@@ -2,7 +2,7 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from "react"
 import { clearAuthCookies, getAuthToken, getUserData } from "@/lib/cookie"
 import { useRouter } from "next/navigation";
-import { check } from "zod";
+
 
 interface AuthContextProps {
     isAuthenticated: boolean;
@@ -43,7 +43,7 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
             await clearAuthCookies();
             setIsAuthenticated(false);
             setUser(null);
-            router.push("/login");
+            router.push("/?auth=login");
         } catch (error) {
             console.error("Logout failed:", error);
         }

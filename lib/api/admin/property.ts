@@ -1,60 +1,59 @@
-import { API } from "../endpoints"
+import {API} from "../endpoints";
 
 import axios from "../axios";
 
-export const createUser = async (userData: any)=>{
+export const createProperty = async (propertyData: any)=> {
     try{
         const response = await axios.post(
-            API.ADMIN.USER.CREATE,
-            userData,
+            API.ADMIN.PROPERTY.CREATE,
+            propertyData,
             {
                 headers: {
-                    'Content-Type': 'multipart/form-data', //for file upload/multer
+                    'Content-Type': 'multipart/form-data',
                 }
+            }
+        );
+        return response.data;
+    }catch(error: Error | any){
+        throw new Error(error.response?.data?.message
+            || error.message || 'Create property failed'
+        );
+    }
+}
+export const getPropertyById = async (id: string)=> {
+    try{
+        const response = await axios.get(
+            API.ADMIN.PROPERTY.GET_ONE(id)
+        );
+        return response.data;
+    }catch (error: Error | any){
+        throw new Error(error.response?.data?.message
+            || error.message || "Get property by id failed"
+        );
+    }
+}
+
+export const getAllProperty = async (
+    page: number, size: number, search?: string
+)=> {
+    try{
+        const response = await axios.get(
+            API.ADMIN.PROPERTY.GET_ALL,
+            {
+                params: {page, size, search}
             }
         );
         return response.data;
     }catch (error: Error | any){
         throw new Error(error.response?.data?.message
-            || error.message || 'Create user failed'
+            || error.message || "Get all property failed"
         );
     }
 }
-
-export const getUserById = async (id: string) => {
-    try {
-        const response = await axios.get(
-            API.ADMIN.USER.GET_ONE(id)
-        );
-        return response.data;
-    }
-    catch (error: Error | any) {
-        throw new Error(error.response?.data?.message
-            || error.message || 'Get user by id failed');
-    }
-}
-
-export const getAllUsers = async (
-    page: number, size: number, search?: string
-) => {
-    try {
-        const response = await axios.get(
-            API.ADMIN.USER.GET_ALL,
-            {
-                params: { page, size, search }
-            }
-        );
-        return response.data;
-    } catch (error: Error | any) {
-        throw new Error(error.response?.data?.message
-            || error.message || 'Get all users failed');
-    }
-}
-
-export const updateUser = async (id: string, updateData: any) => {
-    try {
+export const updateProperty = async (id: string, updateData: any)=> {
+    try{
         const response = await axios.put(
-            API.ADMIN.USER.UPDATE(id),
+            API.ADMIN.PROPERTY.UPDATE(id),
             updateData,
             {
                 headers: {
@@ -66,18 +65,19 @@ export const updateUser = async (id: string, updateData: any) => {
     }
     catch (error: Error | any) {
         throw new Error(error.response?.data?.message
-            || error.message || 'Update user failed');
+            || error.message || 'Update property failed');
     }
 }
 
-export const deleteUser = async (id: string) => {
-    try {
+export const deleteProperty = async (id: string) => {
+    try{
         const response = await axios.delete(
-            API.ADMIN.USER.DELETE(id)
+            API.ADMIN.PROPERTY.DELETE(id)
         );
         return response.data;
     } catch (error: Error | any) {
         throw new Error(error.response?.data?.message
-            || error.message || 'Delete user failed');
+            || error.message || 'Delete property failed');
+    
     }
 }

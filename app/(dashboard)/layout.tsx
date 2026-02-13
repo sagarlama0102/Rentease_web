@@ -1,17 +1,29 @@
 import Header from "@/app/(public)/_components/Header"; // Adjust this path to your public Header
 import Footer from "@/app/(public)/_components/Footer"; // Adjust if you have a Footer component
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+
+  // 1. Check for the cookie on the server
+  const cookieStore = await cookies();
+  const token = cookieStore.get("auth_token");
+
+  // 2. Security: If no token, bounce them to login
+  // This prevents the "Manually writing dashboard in URL" trick
+  if (!token) {
+      redirect('/?auth=login');
+  }
   return (
     <div className="flex flex-col min-h-screen">
       {/* Note: In a real app, we would use a Global State (like Context or Redux).
          For now, since your Header handles the UI, we render it here.
       */}
-      <Header forceLoggedIn = {true}/> 
+      <Header forceLoggedIn = {!!token}/> 
 
       {/* This is where your Dashboard page content will appear */}
       <main className="flex-grow bg-gray-50">

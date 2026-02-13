@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAuthToken, getUserData } from "./lib/cookie";
 
-const publicRoutes = ['/login', '/register'];
+const publicRoutes = ['/login', '/register', '/forget-password', '/reset-password'];
 const adminRoutes = ['/admin'];
-const userRoutes = ['/user'];
+const userRoutes = ['/user','/profile', '/dashboard'];
 
 export async function proxy(request: NextRequest){
     const { pathname }= request.nextUrl;
@@ -15,7 +15,7 @@ export async function proxy(request: NextRequest){
     const isUserRoute = userRoutes.some(route => pathname.startsWith(route));
 
     if(!token && !isPublicRoute){
-        return NextResponse.redirect(new URL('/login', request.url));
+        return NextResponse.redirect(new URL('/?auth=login', request.url));
         
     }
     if(token && user){
@@ -38,6 +38,8 @@ export const config = {
         // what routes to protect/match
         '/admin/:path*',
         '/user/:path*',
+        '/profile/:path*',   
+        '/dashboard/:path*',
         '/login',
         '/register'
     ]
