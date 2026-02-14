@@ -1,10 +1,10 @@
 import { API } from "./endpoints";
 import axios from "./axios";
 
-export const getAllProperties = async (page: number = 1, size: number = 12, search?: string) => {
+export const getAllProperties = async (page: number = 1, size: number = 12, search?: string, propertyType?:string, bhk?: string) => {
     try {
         const response = await axios.get(API.PUBLIC.PROPERTY.GET_ALL, {
-            params: { page, size, search }
+            params: { page, size, search, propertyType, bhk }
         });
         return response.data;
     } catch (error: any) {

@@ -4,12 +4,17 @@ import { getAllProperties, getPropertyDetails } from "../api/property";
 export const handleGetAllProperty = async(
     page: string, 
     size: string, 
-    search?: string) => {
+    search?: string,
+    propertyType?: string, // New param
+  bhk?: string          // New param
+
+) => {
         try {
         const currentPage = parseInt(page) || 1;
         const currentSize = parseInt(size) || 12;
 
-        const response = await getAllProperties(currentPage, currentSize, search);
+        const response = await getAllProperties(currentPage, currentSize, search, propertyType, 
+        bhk);
 
         if (response.success) {
             return {
