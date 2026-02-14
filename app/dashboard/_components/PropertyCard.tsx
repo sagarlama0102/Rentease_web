@@ -36,7 +36,7 @@ export default function PropertyCard({ property }: { property: any }) {
       </p>
 
       <Link
-        href={`/property/${property._id}`}
+        href={`/dashboard/${property._id}`}
         className="block text-center h-10 leading-10 rounded-lg border border-[#142725] text-[#142725] text-sm font-medium hover:bg-[#142725] hover:text-white transition"
       >
         View Details
