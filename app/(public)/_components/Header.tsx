@@ -75,8 +75,8 @@ export default function Header({forceLoggedIn = false}: HeaderProps) {
             </>
           ) : (
             <>
-              <Link href="/properties" className="hover:text-gray-900">Properties</Link>
-              <Link href="/book" className="hover:text-gray-900">Book</Link>
+              <Link href="/dashboard" className="hover:text-gray-900">Dashboard</Link>
+              <Link href="/booking" className="hover:text-gray-900">Booking</Link>
               <Link href="/favorites" className="hover:text-gray-900">Favorites</Link>
               <Link href="/profile" className="hover:text-gray-900">Profile</Link>
             </>

@@ -2,6 +2,7 @@ import { handleGetPropertyDetails } from "@/lib/actions/property-action";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import BookingButton from "@/app/booking/_components/BookingButton";
 
 export default async function PropertyDetailsPage({
   params,
@@ -105,14 +106,11 @@ export default async function PropertyDetailsPage({
 
         {/* Actions */}
         <div className="flex gap-4 mt-10">
-          <button className="flex-1 h-12 bg-[#142725] text-white text-sm font-medium rounded-lg hover:opacity-90 transition">
-            Book Viewing
-          </button>
+       {/* Replace the old button with this */}
+       <BookingButton propertyId={property._id} /> 
 
-          <button className="h-12 w-12 rounded-lg border border-gray-200 hover:bg-gray-50 transition flex items-center justify-center text-lg">
-            ❤️
-          </button>
-        </div>
+       <button className="h-12 w-12 ..."> ❤️ </button>
+    </div>
       </div>
     </div>
   </div>
