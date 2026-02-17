@@ -1,4 +1,5 @@
 import { handleGetMyBookings } from "@/lib/actions/booking-action";
+import CancelBookingButton from "./_components/CancelBookingButton";
 import Link from "next/link";
 
 export default async function UserBookingsPage({
@@ -68,10 +69,21 @@ export default async function UserBookingsPage({
                       <span className={`md:hidden px-3 py-1 rounded-full text-[10px] font-black tracking-widest uppercase ${
                         booking.status === 'CONFIRMED' ? 'bg-green-100 text-green-700' :
                         booking.status === 'REJECTED' ? 'bg-red-100 text-red-700' :
+                        booking.status === 'CANCELLED' ? 'bg-gray-400 text-white' :
                         'bg-yellow-100 text-yellow-700'
                       }`}>
                         {booking.status}
                       </span>
+
+                      {/* ONLY SHOW CANCEL BUTTON IF STATUS IS PENDING */}
+                        {booking.status === 'PENDING' && (
+                        <div className="mt-3">
+                            <CancelBookingButton bookingId={booking._id} />
+                        </div>
+                        )}
+                        <p className="text-[10px] text-gray-400 mt-2 font-medium italic">
+                            {booking.status === 'PENDING' ? 'Awaiting Admin' : 'Decision Finalized'}
+                        </p>
                     </div>
                     
                     <p className="text-sm text-gray-500 mt-1 line-clamp-2 leading-relaxed">
