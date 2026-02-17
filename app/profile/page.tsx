@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "react-toastify";
 import { getAuthToken } from "@/lib/cookie";
+import { User, Mail, Camera, ShieldCheck, Settings, Loader2, Pencil, X } from "lucide-react";
 
 export default function ProfilePage() {
     const { user, setUser, loading } = useAuth();
@@ -68,8 +69,9 @@ export default function ProfilePage() {
 
     if (loading) {
         return (
-            <div className="flex items-center justify-center min-h-[60vh]">
-                <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-[#99DAB3]"></div>
+            <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
+                <Loader2 className="h-10 w-10 animate-spin text-[#99DAB3]" />
+                <p className="text-gray-500 font-medium animate-pulse">Loading your profile...</p>
             </div>
         );
     }
@@ -77,19 +79,19 @@ export default function ProfilePage() {
     if (!user) return <div className="text-center py-20 text-gray-400">Please login to view profile.</div>;
 
     return (
-        <div className="max-w-4xl mx-auto py-12 px-4">
-            {/* Main Card */}
-            <div className="bg-[#142725] rounded-3xl shadow-2xl overflow-hidden border border-[#99DAB3]/10">
-                
-                {/* Top Banner Accent */}
-                <div className="h-32 bg-gradient-to-r from-[#142725] to-[#1e3a37] border-b border-[#99DAB3]/10" />
+        <div className="max-w-5xl mx-auto py-12 px-6">
+            <div className="mb-8">
+                <h1 className="text-3xl font-bold text-gray-900">Account Settings</h1>
+                <p className="text-gray-500 mt-1">Manage your personal information and account preferences.</p>
+            </div>
 
-                <div className="px-8 pb-10 -mt-16">
-                    <div className="flex flex-col md:flex-row items-end gap-6 mb-10">
-                        {/* Profile Picture with Mint Glow */}
-                        <div className="relative">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {/* Left Column: Avatar & Quick Info */}
+                <div className="lg:col-span-1">
+                    <div className="bg-[#142725] rounded-3xl p-8 text-center shadow-xl border border-[#99DAB3]/10">
+                        <div className="relative mx-auto w-32 h-32 mb-6">
                             <div 
-                                className={`w-32 h-32 rounded-2xl overflow-hidden border-4 border-[#142725] shadow-2xl bg-[#1e3a37] flex items-center justify-center ${isEditing ? 'cursor-pointer hover:brightness-110' : ''}`}
+                                className={`w-32 h-32 rounded-3xl overflow-hidden border-4 border-[#1e3a37] shadow-2xl bg-[#1e3a37] flex items-center justify-center transition-all ${isEditing ? 'ring-4 ring-[#99DAB3]/30 cursor-pointer hover:brightness-110' : ''}`}
                                 onClick={() => isEditing && fileInputRef.current?.click()}
                             >
                                 {preview || user?.profilePicture ? (
@@ -99,80 +101,117 @@ export default function ProfilePage() {
                                         alt="Profile"
                                     />
                                 ) : (
-                                    <span className="text-4xl font-bold text-[#99DAB3]">{user?.username?.[0]?.toUpperCase()}</span>
+                                    <span className="text-5xl font-bold text-[#99DAB3]">{user?.username?.[0]?.toUpperCase()}</span>
                                 )}
                             </div>
                             {isEditing && (
-                                <div className="absolute -bottom-2 -right-2 bg-[#99DAB3] text-[#142725] p-2 rounded-lg shadow-lg">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                                <div className="absolute -bottom-2 -right-2 bg-[#99DAB3] text-[#142725] p-2 rounded-xl shadow-lg animate-bounce">
+                                    <Camera size={20} strokeWidth={2.5} />
                                 </div>
                             )}
                             <input type="file" ref={fileInputRef} hidden onChange={handleImageChange} accept="image/*" />
                         </div>
 
-                        {/* Name & Badge */}
-                        <div className="flex-1 mb-2">
-                            <h1 className="text-3xl font-bold text-white tracking-tight">{user?.username}</h1>
-                            <div className="flex items-center gap-3 mt-1">
-                                <p className="text-[#99DAB3]/70 font-medium">{user?.email}</p>
-                                <span className="px-2 py-0.5 bg-[#99DAB3]/10 text-[#99DAB3] text-[10px] font-black rounded border border-[#99DAB3]/20 uppercase">
-                                    {user?.role}
-                                </span>
+                        <h2 className="text-xl font-bold text-white mb-1">{user?.username}</h2>
+                        <div className="inline-flex items-center px-3 py-1 rounded-full bg-[#99DAB3]/10 border border-[#99DAB3]/20 text-[#99DAB3] text-xs font-bold uppercase tracking-widest mb-6">
+                            {user?.role}
+                        </div>
+
+                        <div className="space-y-3 pt-6 border-t border-white/10 text-left">
+                            <div className="flex items-center gap-3 text-white/70 text-sm">
+                                <ShieldCheck size={18} className="text-[#99DAB3]" />
+                                <span>Verified Resident</span>
+                            </div>
+                            <div className="flex items-center gap-3 text-white/70 text-sm">
+                                <Settings size={18} className="text-[#99DAB3]" />
+                                <span>Account Active</span>
                             </div>
                         </div>
-
-                        {/* Toggle Button */}
-                        <button 
-                            onClick={() => {
-                                setIsEditing(!isEditing);
-                                setPreview(null);
-                            }}
-                            className={`px-6 py-2.5 rounded-xl font-bold transition-all text-sm border-2 ${
-                                isEditing 
-                                ? 'border-red-400/50 text-red-400 hover:bg-red-400/10' 
-                                : 'border-[#99DAB3]/30 text-[#99DAB3] hover:bg-[#99DAB3]/10'
-                            }`}
-                        >
-                            {isEditing ? "Cancel" : "Edit Profile"}
-                        </button>
                     </div>
+                </div>
 
-                    <form onSubmit={handleUpdate} className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div className="space-y-2">
-                            <label className="text-[10px] font-black text-[#99DAB3] uppercase tracking-widest ml-1">Username</label>
-                            <input 
-                                type="text"
-                                disabled={!isEditing}
-                                value={formData.username}
-                                onChange={(e) => setFormData({...formData, username: e.target.value})}
-                                className="w-full px-5 py-4 rounded-2xl border border-[#99DAB3]/10 bg-[#1e3a37]/50 text-white disabled:opacity-50 focus:border-[#99DAB3] focus:ring-1 focus:ring-[#99DAB3] transition-all outline-none"
-                                placeholder="Enter username"
-                            />
-                        </div>
-                        <div className="space-y-2">
-                            <label className="text-[10px] font-black text-[#99DAB3] uppercase tracking-widest ml-1">Email Address</label>
-                            <input 
-                                type="email"
-                                disabled={!isEditing}
-                                value={formData.email}
-                                onChange={(e) => setFormData({...formData, email: e.target.value})}
-                                className="w-full px-5 py-4 rounded-2xl border border-[#99DAB3]/10 bg-[#1e3a37]/50 text-white disabled:opacity-50 focus:border-[#99DAB3] focus:ring-1 focus:ring-[#99DAB3] transition-all outline-none"
-                                placeholder="Enter email"
-                            />
+                {/* Right Column: Editable Form */}
+                <div className="lg:col-span-2">
+                    <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 h-full">
+                        <div className="flex justify-between items-center mb-8">
+                            <h3 className="text-xl font-bold text-gray-900">Personal Details</h3>
+                            <button 
+                                onClick={() => {
+                                    setIsEditing(!isEditing);
+                                    setPreview(null);
+                                }}
+                                className={`flex items-center gap-2 px-4 py-2 rounded-xl font-bold transition-all text-sm border-2 ${
+                                    isEditing 
+                                    ? 'border-red-100 text-red-500 hover:bg-red-50' 
+                                    : 'border-gray-100 text-gray-600 hover:bg-gray-50'
+                                }`}
+                            >
+                                {isEditing ? <><X size={16}/> Cancel</> : <><Pencil size={16}/> Edit Profile</>}
+                            </button>
                         </div>
 
-                        {isEditing && (
-                            <div className="md:col-span-2 flex justify-end mt-4">
-                                <button 
-                                    type="submit"
-                                    disabled={updating}
-                                    className="bg-[#99DAB3] text-[#142725] px-12 py-4 rounded-2xl font-black text-sm hover:scale-[1.02] active:scale-[0.98] shadow-xl shadow-[#99DAB3]/10 disabled:opacity-50 transition-all uppercase tracking-wider"
-                                >
-                                    {updating ? "Processing..." : "Save Changes"}
-                                </button>
+                        <form onSubmit={handleUpdate} className="space-y-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="space-y-2">
+                                    <label className="text-xs font-bold text-gray-500 uppercase tracking-wider flex items-center gap-2">
+                                        <User size={14} className="text-[#142725]" /> Username
+                                    </label>
+                                    <input 
+                                        type="text"
+                                        disabled={!isEditing}
+                                        value={formData.username}
+                                        onChange={(e) => setFormData({...formData, username: e.target.value})}
+                                        className="w-full px-5 py-4 rounded-2xl border border-gray-100 bg-gray-50/50 text-gray-900 disabled:bg-gray-100/50 disabled:text-gray-500 focus:border-[#99DAB3] focus:ring-2 focus:ring-[#99DAB3]/20 transition-all outline-none"
+                                        placeholder="Your username"
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-xs font-bold text-gray-500 uppercase tracking-wider flex items-center gap-2">
+                                        <Mail size={14} className="text-[#142725]" /> Email Address
+                                    </label>
+                                    <input 
+                                        type="email"
+                                        disabled={!isEditing}
+                                        value={formData.email}
+                                        onChange={(e) => setFormData({...formData, email: e.target.value})}
+                                        className="w-full px-5 py-4 rounded-2xl border border-gray-100 bg-gray-50/50 text-gray-900 disabled:bg-gray-100/50 disabled:text-gray-500 focus:border-[#99DAB3] focus:ring-2 focus:ring-[#99DAB3]/20 transition-all outline-none"
+                                        placeholder="Your email"
+                                    />
+                                </div>
+                            </div>
+
+                            {isEditing && (
+                                <div className="flex justify-end pt-4">
+                                    <button 
+                                        type="submit"
+                                        disabled={updating}
+                                        className="bg-[#142725] text-white px-10 py-4 rounded-2xl font-bold text-sm hover:bg-[#1e3a37] shadow-lg disabled:opacity-50 transition-all flex items-center gap-3"
+                                    >
+                                        {updating ? (
+                                            <><Loader2 size={18} className="animate-spin" /> Updating...</>
+                                        ) : (
+                                            "Save Changes"
+                                        )}
+                                    </button>
+                                </div>
+                            )}
+                        </form>
+
+                        {!isEditing && (
+                            <div className="mt-12 p-6 rounded-2xl bg-gray-50 border border-gray-100">
+                                <div className="flex items-start gap-4">
+                                    <div className="p-3 bg-white rounded-xl shadow-sm">
+                                        <ShieldCheck className="text-[#142725]" size={24} />
+                                    </div>
+                                    <div>
+                                        <h4 className="font-bold text-gray-900">Privacy & Security</h4>
+                                        <p className="text-sm text-gray-500 mt-1">Your account information is protected with end-to-end encryption. Need to update your password?</p>
+                                        <button className="mt-3 text-sm font-bold text-[#142725] hover:underline">Request password reset</button>
+                                    </div>
+                                </div>
                             </div>
                         )}
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
