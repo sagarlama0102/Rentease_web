@@ -35,6 +35,11 @@ export const API = {
             CREATE: '/api/bookings/',
             GET_MY_BOOKINGS: '/api/bookings/my-bookings',
             CANCEL: (id: string) => `/api/bookings/${id}/cancel`,
+        },
+        FAVOURITE: {
+            TOGGLE: '/api/favourites/toggle',
+            GET_MY_WISHLIST: '/api/favourites/my-wishlist',
+            CHECK_STATUS: (propertyId: string) => `/api/favourites/status/${propertyId}`,
         }
     },
     PUBLIC: {

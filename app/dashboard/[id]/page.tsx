@@ -130,10 +130,6 @@ export default async function PropertyDetailsPage({
               ) : (
                 <BookingButton propertyId={property._id} />
               )}
-
-              <button className="h-12 w-12 border border-gray-200 rounded-lg flex items-center justify-center hover:bg-gray-50 transition text-lg">
-                ❤️
-              </button>
             </div>
 
           </div>
