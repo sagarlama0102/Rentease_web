@@ -205,7 +205,7 @@ export default function CreatePropertyForm() {
       </div>
 
       <div className="space-y-2">
-        <label className="text-sm font-medium">Price ($)</label>
+        <label className="text-sm font-medium">Price (Rs)</label>
         <input
           type="number"
           {...register("price", { valueAsNumber: true })}

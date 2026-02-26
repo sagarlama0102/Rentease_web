@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { getAuthToken } from "@/lib/cookie";
 import { User, Mail, Camera, ShieldCheck, Settings, Loader2, Pencil, X } from "lucide-react";
 import Loading from "./loading";
+import Link from "next/link";
 
 export default function ProfilePage() {
     const { user, setUser, loading } = useAuth();
@@ -201,7 +202,11 @@ export default function ProfilePage() {
                                     <div>
                                         <h4 className="font-bold text-gray-900">Privacy & Security</h4>
                                         <p className="text-sm text-gray-500 mt-1">Your account information is protected with end-to-end encryption. Need to update your password?</p>
-                                        <button className="mt-3 text-sm font-bold text-[#142725] hover:underline">Request password reset</button>
+                                        <Link 
+                                           href="/forget-password" 
+                                            className="mt-3 inline-block text-sm font-bold text-[#142725] hover:underline">
+                                            Request password reset
+                                        </Link>
                                     </div>
                                 </div>
                             </div>

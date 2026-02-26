@@ -182,7 +182,7 @@ const PropertyTable = (
               </div>
 
               <div className="text-lg font-bold text-[#99DAB3]">
-                ${Number(prop.price).toLocaleString()}
+                Rs {Number(prop.price).toLocaleString()}
               </div>
 
               {/* Actions */}
