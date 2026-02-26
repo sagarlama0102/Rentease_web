@@ -4,6 +4,7 @@ import { useAuth } from "@/context/AuthContext";
 import { toast } from "react-toastify";
 import { getAuthToken } from "@/lib/cookie";
 import { User, Mail, Camera, ShieldCheck, Settings, Loader2, Pencil, X } from "lucide-react";
+import Loading from "./loading";
 
 export default function ProfilePage() {
     const { user, setUser, loading } = useAuth();
@@ -67,14 +68,8 @@ export default function ProfilePage() {
         }
     };
 
-    if (loading) {
-        return (
-            <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
-                <Loader2 className="h-10 w-10 animate-spin text-[#99DAB3]" />
-                <p className="text-gray-500 font-medium animate-pulse">Loading your profile...</p>
-            </div>
-        );
-    }
+    if (loading) return <Loading />;
+        
 
     if (!user) return <div className="text-center py-20 text-gray-400">Please login to view profile.</div>;
 
