@@ -8,7 +8,7 @@ interface PageProps {
 }
 
 export default async function DashboardPage({ searchParams }: PageProps) {
-  // 1. You MUST await searchParams in Next.js 15+
+ 
   const params = await searchParams;
 
   // 2. Extract values from the URL
