@@ -22,6 +22,24 @@ export const API = {
             GET_ONE: (propertyId: string) => `/api/admin/properties/${propertyId}`,
             UPDATE: (propertyId: string) => `/api/admin/properties/${propertyId}`,
             DELETE: (propertyId: string) => `/api/admin/properties/${propertyId}`,
+        },
+        BOOKING: {
+            GET_ALL: '/api/admin/bookings/',
+            UPDATE_STATUS: (id: string) => `/api/admin/bookings/${id}/status`,
+        }
+
+    },
+    // Adding USER for private actions like booking
+    USER: {
+        BOOKING: {
+            CREATE: '/api/bookings/',
+            GET_MY_BOOKINGS: '/api/bookings/my-bookings',
+            CANCEL: (id: string) => `/api/bookings/${id}/cancel`,
+        },
+        FAVOURITE: {
+            TOGGLE: '/api/favourites/toggle',
+            GET_MY_WISHLIST: '/api/favourites/my-wishlist',
+            CHECK_STATUS: (propertyId: string) => `/api/favourites/status/${propertyId}`,
         }
     },
     PUBLIC: {

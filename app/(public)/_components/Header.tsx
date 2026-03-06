@@ -1,8 +1,7 @@
-
 "use client";
 
 import Link from "next/link";
-import { useEffect ,useState } from "react";
+import { useEffect, useState } from "react";
 import AuthModal from "@/app/(auth)/_components/authModal";
 import LoginForm from "@/app/(auth)/_components/LoginForm";
 import RegisterForm from "@/app/(auth)/_components/RegisterForm";
@@ -10,25 +9,29 @@ import { useRouter } from "next/navigation";
 import { handleLogout } from "@/lib/actions/auth-action";
 import { useSearchParams } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import LogoutModal from "./LogoutModel";
 
-// 1. Define the Prop interface
 interface HeaderProps {
   forceLoggedIn?: boolean;
 }
-export default function Header({forceLoggedIn = false}: HeaderProps) {
+
+export default function Header({ forceLoggedIn = false }: HeaderProps) {
   const { checkAuth } = useAuth();
   const searchParams = useSearchParams();
   const router = useRouter();
+
+  // States
   const [isLoggedIn, setIsLoggedIn] = useState(forceLoggedIn);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  const [authView, setAuthView] = useState<"login" | "register">("login");
 
   useEffect(() => {
     const auth = searchParams.get("auth");
     if (auth === "login") {
       setAuthView("login");
       setIsModalOpen(true);
-      
-      // This removes "?auth=login" from the bar without reloading or scrolling
-      router.replace("/", { scroll: false }); 
+      router.replace("/", { scroll: false });
     }
   }, [searchParams, router]);
 
@@ -36,35 +39,36 @@ export default function Header({forceLoggedIn = false}: HeaderProps) {
     setIsLoggedIn(forceLoggedIn);
   }, [forceLoggedIn]);
 
+  // Handlers
   const handleClose = () => {
     setIsModalOpen(false);
-    // If the param somehow stuck around, this clears it when clicking 'X'
     if (searchParams.get("auth")) {
       router.replace("/", { scroll: false });
     }
   };
 
-  // Modal States
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [authView, setAuthView] = useState<"login" | "register">("login");
-
-  // Handlers
   const openLogin = () => { setAuthView("login"); setIsModalOpen(true); };
   const openRegister = () => { setAuthView("register"); setIsModalOpen(true); };
+
+  const confirmLogout = async () => {
+    await handleLogout();
+    setIsLoggedIn(false);
+    setIsLogoutModalOpen(false);
+    router.push("/");
+  };
 
   return (
     <header className="w-full bg-white shadow-sm">
       <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
         {/* Logo */}
         <div className="text-xl font-bold text-gray-800">
-
           <Link href="/" className="flex items-center">
-          <span className="text-gray-900">RENT</span>
-          <span className="text-[#99DAB3]">EASE</span>
-          </Link> 
+            <span className="text-gray-900">RENT</span>
+            <span className="text-[#99DAB3]">EASE</span>
+          </Link>
         </div>
 
-        {/* Navigation Links - Dynamically switches based on isLoggedIn */}
+        {/* Navigation Links */}
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-700" aria-label="Main Navigation">
           {!isLoggedIn ? (
             <>
@@ -75,42 +79,28 @@ export default function Header({forceLoggedIn = false}: HeaderProps) {
             </>
           ) : (
             <>
-              <Link href="/properties" className="hover:text-gray-900">Properties</Link>
-              <Link href="/book" className="hover:text-gray-900">Book</Link>
-              <Link href="/favorites" className="hover:text-gray-900">Favorites</Link>
+              <Link href="/dashboard" className="hover:text-gray-900">Dashboard</Link>
+              <Link href="/booking" className="hover:text-gray-900">Booking</Link>
+              <Link href="/favourite" className="hover:text-gray-900">Favorites</Link>
               <Link href="/profile" className="hover:text-gray-900">Profile</Link>
             </>
           )}
         </nav>
 
-        
         {/* Auth Buttons / Profile Action */}
         <div className="flex items-center gap-3">
           {!isLoggedIn ? (
             <>
-              <button 
-                onClick={openLogin}
-                className="text-sm font-medium text-gray-700 hover:text-green-600 transition"
-              >
+              <button onClick={openLogin} className="text-sm font-medium text-gray-700 hover:text-green-600 transition">
                 Login
               </button>
-              <button 
-                onClick={openRegister}
-                className="rounded-md bg-[#142725] px-4 py-2 text-sm font-semibold text-white hover:bg-green-600 transition"
-              >
+              <button onClick={openRegister} className="rounded-md bg-[#142725] px-4 py-2 text-sm font-semibold text-white hover:bg-green-600 transition">
                 Sign Up
               </button>
             </>
           ) : (
             <button 
-              onClick={async () => {
-                if(confirm("Are you sure you want to logout?")){
-                  await handleLogout();
-                  setIsLoggedIn(false);
-                  router.push("/");
-                }
-                
-              }} // Simple logout toggle for testing
+              onClick={() => setIsLogoutModalOpen(true)} 
               className="text-sm font-medium text-red-500 hover:text-red-700 transition"
             >
               Logout
@@ -124,23 +114,24 @@ export default function Header({forceLoggedIn = false}: HeaderProps) {
         {authView === "login" ? (
           <LoginForm 
             onSwitch={() => setAuthView("register")}
-            onLoginSuccess={async(role: string) =>{
+            onLoginSuccess={async (role: string) => {
               await checkAuth();
               setIsLoggedIn(true);
               setIsModalOpen(false);
-              // router.push("/dashboard");
-              if (role === 'admin') {
-      router.push("/admin");
-    } else {
-      router.push("/dashboard");
-    }
+              router.push(role === 'admin' ? "/admin" : "/dashboard");
             }} 
           />
         ) : (
           <RegisterForm onSwitch={() => setAuthView("login")} />
         )}
       </AuthModal>
+
+      {/* MODERN LOGOUT DIALOG */}
+      <LogoutModal 
+        isOpen={isLogoutModalOpen} 
+        onClose={() => setIsLogoutModalOpen(false)} 
+        onConfirm={confirmLogout} 
+      />
     </header>
   );
 }
-

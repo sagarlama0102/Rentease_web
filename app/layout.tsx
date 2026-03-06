@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 import { ToastContainer } from "react-toastify";
+import NextTopLoader from "nextjs-toploader";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -28,6 +29,17 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased `}
       >
+        <NextTopLoader 
+          color="#99DAB3"       // Matches your UI's green theme
+          initialPosition={0.08}
+          crawlSpeed={200}
+          height={3}
+          crawl={true}
+          showSpinner={false}   // Set to true if you want a spinning circle too
+          easing="ease"
+          speed={200}
+          shadow="0 0 10px #99DAB3,0 0 5px #99DAB3"
+        />
         <AuthProvider>
           {children}
           <ToastContainer position="top-right" autoClose={3000} />

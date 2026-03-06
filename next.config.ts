@@ -16,6 +16,12 @@ const config: NextConfig = {
       },
     ]
   },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '6mb',  // ← Set this slightly above your Multer limit (5 MB) + some buffer for form fields
+      // or '10mb' if you want more headroom
+    },
+  },
 }
 
 export default config
